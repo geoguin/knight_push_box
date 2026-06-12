@@ -1,0 +1,1702 @@
+# Knight Push Box Game
+# start from 2025/11/15
+# made by geoguin
+#  ### NOTDONE ###  # %%%save%%%
+"""
+add achievement?
+add more rotate levels
+intro_animation
+"""
+import math
+import simplegui
+import time
+import copy
+
+# !!! paste data here to import previous save !!! 
+# save_string = ctrl+v
+save_string = "coin:100@best_moves:['DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF']@cleared:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]@custom_board:[[['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']], [['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']], [['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']], [['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']], [['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']]]@locked:[['ADVANCE', 25], ['undo function', 15], ['EDITOR', 10], ['SKIN', 20]]@skins:[['default', 1], ['yaju', 0], ['ani', 0]]@"
+
+#"coin:66@best_moves:['DNF', 1, 1, 2, 2, 3, 4, 4, 5, 11, 8, 8, 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF', 'DNF']@cleared:[0, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]@custom_board:[[['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']], [['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']], [['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']], [['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']], [['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']]]@locked:[]@skins:[['default', 1], ['yaju', 0], ['ani', 0]]@"
+
+imported = False
+outported = False
+
+# Initial Variables
+if True:
+    # Language? 
+    SCREENS = ["MENU","CLASSIC","PLAY_CUSTOM","ADVANCE","EDITOR","SHOP","SKIN","STATUS"]
+    current_screen = "MENU"
+    
+    ### can't change WIDTH HEIGHT now 
+    WIDTH = 700 		# board width (700)
+    HEIGHT = 600		# board height (600)
+    BLOCK_SIZE = 50 	# board grid block size (50)
+    MAX_X_NUM = 10 		# x:0~9
+    MAX_Y_NUM = 10 		# y:0~9
+    FONT = 20			# level / time / score (20)
+    TEXT_DIC_Y = {'A':1,'B':2,'C':3,'D':4,'E':5,'F':6,'G':7,'H':8,'I':9,'J':10,'K':11,'L':12,'M':13,'N':14,'O':15,'P':16,'Q':17,'R':18,'S':19,'T':20,'U':21,'V':22,'W':23,'X':24,'Y':25,'Z':26}
+    TEXT_Y = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    TEXT_DIC_X = {'1':1,'2':2,'3':3,'4':4,'5':5,'6':6,'7':7,'8':8,'9':9,'0':10,'a':11,'b':12,'c':13,'d':14,'e':15,'f':16,'g':17,'h':18,'i':19,'j':20,'k':21,'l':22,'m':23,'n':24,'o':25,'p':26}
+    TEXT_X = "1234567890abcdefghijklmnop"
+    hint = " "
+    initial_time = time.time()
+    show_time = 0
+    level = 0
+    moves = 0
+    move_string = ""
+    board = []
+    is_win = False
+    Nx = 0
+    Ny = 0
+    history = [] # to record moves for undo
+    #>> editor_var
+    MAX_CUSTOM_BOARD = 5
+    custom_board = [[['F' for _ in range(MAX_Y_NUM)] for _ in range(MAX_X_NUM)] for _ in range(MAX_CUSTOM_BOARD)]
+
+    buttons = [['F',1, "Void"],['T',0, "Floor"],['N',0,"Knight"],['X',0,"Box"],['0',0,"Dot"],['1',0,"Dot+Box"],['2',0,"Dot+Knight"]]
+    cur_sel = 'F'
+    is_save = True # now save(T) or load(F)
+    saved = False
+    loaded = False
+    #<< editor_var
+    
+    GAME = ["CLASSIC", "ADVANCE"]
+    CLASSIC_LEVEL = 1+25 # intro + 25levels
+    ROT_LEVEL = 10
+    LEVEL_MAX = CLASSIC_LEVEL + ROT_LEVEL
+    rot_plate = [[] for _ in range(LEVEL_MAX)]
+    
+    IDEAL_MOVES = [0 for _ in range(LEVEL_MAX)]
+    best_moves = ["DNF" for _ in range(LEVEL_MAX)] # record how many moves player got as best  # %%%save%%%
+
+    input_board = range(LEVEL_MAX) # total num of levels
+    
+    # if past level +1coin , if IDEAL_MOVES +1coin
+    coin = 0 # %%%save%%%
+    locked = [["ADVANCE", 25],["undo function",15], ["EDITOR",10],["SKIN",20]] # collect coin to unlock # %%%save
+    skins = [["default",1],["yaju",0], ["ani",0]] # test # NOTDONE # %%%save%%%
+    # status pages (CLASSIC+ADVANCE)
+    status_pages = 0
+    
+    # cost $10 for EDITOR
+    # clear classic or cost $25 to unlock ADVANCE
+    # bought skin to unlock SKIN
+    # use pop to unlock it out the list
+    
+    cleared = [0 for _ in range(LEVEL_MAX)] # which levels are cleared 0: DNF, 1:cleared, 2:ideal_cleared
+
+    # try show solver, solution
+    input_code = '' # if input_code = nigguh: have_solve = True
+    have_solve = False
+    game_button = ["RETRY","NEXT lvl","PRE lvl", "Undo"] # .append Solve
+    sol_activate = False
+    sol_step = 0
+    sol_speed = 0.4
+    sol_ini_time = time.time()
+    
+    start_bgm_time = time.time()
+    current_bgm = None
+    is_bgm = True
+    is_sfx = True  
+# Initial load image, sound
+if True:
+    # Convert GitHub 'blob' URL to raw.githubusercontent URL
+    def github_blob_to_raw(url):
+        ans = url.replace("github.com", "raw.githubusercontent.com")
+        return ans.replace("/blob/", "/")
+
+    # NOTDONE temp_sfx : win, move 
+    move_sfx = simplegui.load_sound(github_blob_to_raw("https://github.com/geoguin/knight_push_box/blob/main/move_sfx.mp3"))
+    win_sfx = simplegui.load_sound(github_blob_to_raw("https://github.com/geoguin/knight_push_box/blob/main/win_sfx.mp3"))
+    move_sfx.set_volume(0.1)
+    win_sfx.set_volume(0.5)
+    
+    ## NOTDONE with different skins = [["default",1],["yaju",0], ["ani",0]]
+    # png for background, items
+    home_png = simplegui.load_image(github_blob_to_raw("https://github.com/geoguin/knight_push_box/blob/main/menu_button.png"))
+    knight_png = simplegui.load_image(github_blob_to_raw("https://github.com/geoguin/knight_push_box/blob/main/knight_png.png"))
+    bg1_png = simplegui.load_image(github_blob_to_raw("https://github.com/geoguin/knight_push_box/blob/main/tempbg1.jpg"))
+    bg2_png = simplegui.load_image(github_blob_to_raw("https://github.com/geoguin/knight_push_box/blob/main/tempbg2.jpg"))
+    
+    title_png = simplegui.load_image(github_blob_to_raw("https://github.com/geoguin/knight_push_box/blob/main/Knight_Push_Box.png"))
+
+    # edited bgm from https://www.youtube.com/watch?v=g7qBwbvV4Js (https://www.mediafire.com/file/xuann90j92ssaah/Glorious_Morning_I_and_II.mid)
+    classic_bgm = simplegui.load_sound(github_blob_to_raw("https://github.com/geoguin/knight_push_box/blob/main/CLASSIC.mp3"))
+    advance_bgm = simplegui.load_sound(github_blob_to_raw("https://github.com/geoguin/knight_push_box/blob/main/ADVANCE.mp3"))
+    custom_bgm = simplegui.load_sound(github_blob_to_raw("https://github.com/geoguin/knight_push_box/blob/main/CUSTOM.mp3"))
+    editor_bgm = simplegui.load_sound(github_blob_to_raw("https://github.com/geoguin/knight_push_box/blob/main/EDITOR.mp3"))
+    shop_bgm = simplegui.load_sound(github_blob_to_raw("https://github.com/geoguin/knight_push_box/blob/main/SHOP.mp3"))
+    status_bgm = simplegui.load_sound(github_blob_to_raw("https://github.com/geoguin/knight_push_box/blob/main/STATUS_SKIN.mp3"))
+    BGM_TIME = {classic_bgm:60+49, advance_bgm:60+19, custom_bgm:60+17, editor_bgm: 60*6+49, shop_bgm:55, status_bgm:32}
+
+# classic levels IDEAL_MOVES might not really be the least ###UNDONE### check with AI?
+if True:
+    # easy levels
+    if True:
+        IDEAL_MOVES[0 ] = 0
+        input_board[0 ] = [['T', 'T', 'F', 'T', 'N', 'F', 'T', 'T', 'F', 'F'], ['T', 'X', 'F', 'T', 'X', 'F', 'T', 'N', 'F', 'F'], ['N', 'T', 'F', 'T', 'T', 'F', 'X', 'T', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['N', 'X', 'T', 'F', 'T', 'F', 'T', 'T', 'T', 'T'], ['T', 'T', 'T', 'F', 'T', '1', 'T', 'T', '1', 'T'], ['F', 'F', 'F', 'F', 'T', 'T', 'N', 'X', 'T', 'T'], ['T', 'N', 'T', 'F', 'T', 'F', 'F', 'T', '0', 'T'], ['T', 'T', 'X', 'F', 'T', 'T', 'F', '1', 'T', 'T'], ['F', 'F', 'F', 'F', 'T', 'T', 'T', 'T', 'T', 'T']]
+        IDEAL_MOVES[1 ] = 1
+        input_board[1 ] = [['T', 'T', '0'], ['T', 'X', 'T'], ['T', 'N', 'T']]
+        IDEAL_MOVES[2 ] = 1
+        input_board[2 ] = [['0', 'T', 'T'], ['T', 'X', 'T'], ['T', 'N', 'T']]
+        IDEAL_MOVES[3 ] = 2
+        input_board[3 ] = [['T', 'T', 'T'], ['T', 'X', 'T'], ['N', 'T', '0']]
+        IDEAL_MOVES[4 ] = 2
+        input_board[4 ] = [['0', 'T', 'T'], ['T', 'X', 'T'], ['N', 'T', 'T']]
+        IDEAL_MOVES[5 ] = 3
+        input_board[5 ] = [['F', 'X', 'T'], ['0', 'T', '0'], ['T', 'X', 'F'], ['F', 'N', 'F']]
+        IDEAL_MOVES[6 ] = 4
+        input_board[6 ] = [['F', 'T', 'F', 'F'], ['F', 'X', 'F', 'F'], ['N', 'F', 'T', 'T'], ['F', '0', 'F', 'F']]
+        IDEAL_MOVES[7 ] = 4
+        input_board[7 ] = [['0', 'F', 'F', 'F'], ['F', '1', 'F', 'N'], ['F', 'T', 'X', 'F'], ['F', 'F', 'T', 'F']]
+        IDEAL_MOVES[8 ] = 5
+        input_board[8 ] = [['F', 'X', 'T', 'F', 'T'], ['0', 'X', 'F', 'T', '0'], ['0', 'N', 'X', 'X', 'F'], ['F', 'F', 'F', '0', 'F']]
+        IDEAL_MOVES[9 ] = 7
+        input_board[9 ] = [['0', 'F', 'F', 'T', 'F'], ['F', 'X', 'T', 'F', '0'], ['T', 'F', 'T', 'X', 'F'], ['0', 'F', 'F', 'T', 'F'], ['F', 'X', 'F', 'F', 'F'], ['F', 'N', 'F', 'F', 'F']]
+        IDEAL_MOVES[10] = 8
+        input_board[10] = [['0', '0', 'F', 'F', '0'], ['F', 'X', 'X', 'X', '0'], ['F', 'X', 'N', 'X', 'F'], ['0', 'X', 'X', 'X', 'F'], ['0', 'F', 'F', '0', '0']]
+        IDEAL_MOVES[11] = 8
+        input_board[11] = [['0', '0', 'T', 'F', 'F'], ['T', 'T', 'X', 'T', 'T'], ['F', 'T', 'X', 'T', 'F'], ['F', 'T', 'T', 'N', 'F']]
+        IDEAL_MOVES[12] = 9
+        input_board[12] = [['T', 'X', 'F', 'F', 'F'], ['F', 'F', '0', 'T', 'F'], ['F', '0', 'F', 'T', 'T'], ['F', 'N', 'X', 'F', 'F']]
+    # medium levels
+    if True:
+        IDEAL_MOVES[13] = 10
+        input_board[13] = [['0', 'T', 'T', '0'], ['T', 'X', 'X', 'T'], ['T', 'X', 'X', 'T'], ['0', 'N', 'T', '0'], ['F', 'T', 'T', 'F']]
+        IDEAL_MOVES[14] = 11
+        input_board[14] = [['0', 'F', 'F', 'F', 'F'], ['F', '0', 'F', 'F', 'F'], ['F', 'T', 'T', 'F', 'F'], ['F', 'F', 'T', 'X', 'F'], ['F', 'T', 'T', 'N', 'X'], ['F', 'F', 'F', 'T', 'T']]
+        IDEAL_MOVES[15] = 11
+        input_board[15] = [['F', 'F', 'X', 'T', 'T'], ['F', 'T', 'T', 'T', 'F'], ['0', 'F', 'X', 'T', '0'], ['F', 'F', 'N', 'F', 'F']]
+        IDEAL_MOVES[16] = 15
+        input_board[16] = [['0', 'T', 'X', 'T'], ['T', '0', 'T', 'X'], ['X', 'T', '0', 'T'], ['N', 'X', 'T', '0']]
+        IDEAL_MOVES[17] = 15
+        input_board[17] = [['T', 'T', 'T', 'T', 'T', 'T'], ['T', 'X', 'T', 'F', 'N', 'T'], ['T', 'T', 'T', 'F', 'F', 'T'], ['F', '0', 'F', 'T', 'T', 'T'], ['F', 'F', '0', 'T', 'X', 'T'], ['F', 'F', 'F', 'T', 'T', 'T']]
+        IDEAL_MOVES[18] = 15
+        input_board[18] = [['0', 'F', 'F', 'F'], ['T', 'T', 'F', 'F'], ['F', 'T', 'T', 'F'], ['T', 'T', 'N', 'X'], ['F', 'F', 'T', 'T']]
+        IDEAL_MOVES[19] = 16
+        input_board[19] = [['0', 'T', 'T', 'T', 'T', 'T'], ['T', 'T', 'T', 'X', 'T', 'T'], ['T', 'T', 'F', 'T', 'X', 'T'], ['T', '0', 'T', 'T', 'T', 'N']]
+        IDEAL_MOVES[20] = 17
+        input_board[20] = [['T', '0', 'T', 'T'], ['0', 'N', 'T', 'T'], ['T', 'T', 'T', 'X'], ['T', 'T', 'X', 'T']]
+    # advance levels
+    if True:      
+        IDEAL_MOVES[21] = 23
+        input_board[21] = [['F', 'F', 'F', 'F', 'F', 'F', 'F', '0'], ['F', 'F', 'F', 'F', 'F', 'F', 'T', '0'], ['F', 'F', 'F', 'F', 'F', 'T', 'X', 'F'], ['T', 'N', 'X', 'F', 'T', 'X', 'F', '0'], ['T', 'T', 'T', 'T', 'X', 'F', '0', 'F'], ['F', 'F', 'T', 'T', 'F', '0', 'F', 'F'], ['F', 'F', 'F', 'T', 'X', 'T', 'F', 'F'], ['F', 'F', 'F', 'T', 'F', 'F', 'F', 'F']]
+        IDEAL_MOVES[22] = 27
+        input_board[22] = [['0', 'N', 'F', 'F', 'T', '0'], ['T', 'X', 'F', 'F', 'X', 'T'], ['T', 'T', 'X', 'X', 'T', 'T'], ['0', 'T', 'T', 'T', 'T', '0']]
+        IDEAL_MOVES[23] = 28
+        input_board[23] = [['F', 'F', 'F', 'T', 'F', 'F'], ['F', 'F', 'T', 'T', 'F', 'F'], ['F', 'T', 'T', 'F', 'T', 'F'], ['F', 'N', 'F', 'F', 'T', 'T'], ['0', 'T', 'F', 'T', 'T', 'T'], ['F', 'F', 'T', 'X', 'F', 'F']]
+        IDEAL_MOVES[24] = 29
+        input_board[24] = [['F', 'F', 'F', 'F', 'T', 'T', 'F', 'F', 'F', 'F'], ['F', 'T', 'T', 'F', 'T', 'T', 'F', 'T', 'T', 'F'], ['F', 'T', 'X', 'T', 'F', 'F', 'T', 'X', 'T', 'F'], ['F', 'F', 'T', 'T', 'F', 'F', 'T', 'T', 'F', 'F'], ['N', 'T', 'F', 'F', '0', '0', 'F', 'F', 'T', 'T'], ['T', 'T', 'F', 'F', '0', '0', 'F', 'F', 'T', 'T'], ['F', 'F', 'T', 'T', 'F', 'F', 'T', 'T', 'F', 'F'], ['F', 'T', 'X', 'T', 'F', 'F', 'T', 'X', 'T', 'F'], ['F', 'T', 'T', 'F', 'T', 'T', 'F', 'T', 'T', 'F'], ['F', 'F', 'F', 'F', 'T', 'T', 'F', 'F', 'F', 'F']]        
+        IDEAL_MOVES[25] = 32
+        input_board[25] = [['0', 'T', '0', 'T', '0', 'T', '0'], ['T', 'X', 'T', 'X', 'T', 'X', 'T'], ['0', 'T', 'X', 'T', 'X', 'T', '0'], ['T', 'X', 'T', 'N', 'T', 'X', 'T'], ['0', 'T', 'X', 'T', 'X', 'T', '0'], ['T', 'X', 'T', 'X', 'T', 'X', 'T'], ['0', 'T', '0', 'T', '0', 'T', '0']]       
+# rot levels starts from input_board[CLASSIC_LEVEL]
+if True:
+    IDEAL_MOVES[26] = 5
+    input_board[26] = [['T', 'T', 'T', 'N', 'F', 'F', 'F', 'F', 'F', 'F'], ['T', 'T', 'T', 'T', 'F', 'F', 'F', 'F', 'F', 'F'], ['T', 'T', 'X', 'T', 'F', 'F', 'F', 'F', 'F', 'F'], ['0', 'T', 'T', 'T', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']]
+    rot_plate[26] = [(0,2,"CCW"),(2,0,"CW")]
+    IDEAL_MOVES[27] = 13
+    input_board[27] = [['T', 'T', 'T', 'N', 'F', 'F', 'F', 'F', 'F', 'F'], ['T', 'T', 'T', 'T', 'F', 'F', 'F', 'F', 'F', 'F'], ['T', 'T', 'X', 'T', 'F', 'F', 'F', 'F', 'F', 'F'], ['0', 'T', 'T', 'T', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']]
+    rot_plate[27] = [(0,0,"CCW")]
+    IDEAL_MOVES[28] = 4
+    input_board[28] = [['F', 'F', 'F', 'F', 'F', 'F', 'F', '0', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'X', 'F'], ['T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'F'], ['T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'T', 'F'], ['T', 'T', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['T', 'N', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']]
+    rot_plate[28] = [(2,0,"CCW"),(2,1,"CCW"),(2,2,"CCW"),(2,3,"CCW"),(2,4,"CCW"),(2,5,"CCW"),(2,6,"CCW"),(2,7,"CCW")]
+####
+    input_board[29] = [['N', 'T', 'T', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['T', 'X', 'T', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['T', 'T', '0', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']]
+    rot_plate[29] = [(0,0,"CCW"),(0,1,"CW"),(1,0,"CW"),(1,1,"CCW")]
+####
+    input_board[30] = [['F', 'F', 'F', 'F', 'F', 'F', 'F', '0', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'X', '0', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'X', 'T', 'F', 'F', 'F'], ['T', 'N', 'T', 'F', 'X', 'T', 'F', '0', 'F', 'F'], ['T', 'T', 'X', 'T', 'T', 'F', '0', 'F', 'F', 'F'], ['F', 'F', 'T', 'T', 'F', '0', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'X', 'T', 'T', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'T', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']]
+    rot_plate[30] = [(3,0,"CCW")]
+    input_board[31] = [['F', '0', '0', 'T', '0', '0', 'F', 'F', 'F', 'F'], ['F', '0', '0', 'T', '0', '0', 'F', 'F', 'F', 'F'], ['F', 'T', 'N', 'X', 'T', 'T', 'F', 'F', 'F', 'F'], ['F', 'X', 'X', 'X', '0', '0', 'F', 'F', 'F', 'F'], ['X', 'X', 'X', 'T', '0', '0', 'F', 'F', 'F', 'F'], ['X', 'X', 'X', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'X', 'X', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']]
+    rot_plate[31] = [(0,1,"CW"),(0,4,"CW"),(2,2,"CW"),(3,1,"CCW"),(3,4,"CW"),(4,0,"CCW"),(5,1,"CCW")]
+    input_board[32] =  [['F', 'F', 'F', '0', 'F', 'F', 'F', 'F', 'F', 'F'], ['0', 'N', 'X', 'T', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'X', 'X', 'T', 'F', 'F', 'F', 'F', 'F', 'F'], ['0', 'T', 'T', 'T', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']]
+    rot_plate[32] = [(1,1,"CW")]
+    input_board[33] = [['F', 'F', 'F', 'T', '0', '0', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'T', '0', '0', 'F', 'F', 'F', 'F'], ['T', 'N', 'X', 'T', 'T', 'F', 'F', 'F', 'F', 'F'], ['X', 'X', 'X', '0', '0', 'F', 'F', 'F', 'F', 'F'], ['X', 'X', 'T', '0', '0', 'F', 'F', 'F', 'F', 'F'], ['X', 'X', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F'], ['F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F', 'F']]
+    rot_plate[33] = [(0,4,"CW"),(2,1,"CW"),(3,0,"CCW"),(3,3,"CW"),(4,0,"CW")]
+    
+def outport_savedata():
+    # title
+    print "\n" + "~" * 15 + "SAVE DATA" + "~" * 15
+    print "To save ur data for next time u need to copy"
+    print "strings below and past into \"save_string\" to load "
+    print "Ｖ " *5 + "start from below" + "Ｖ " *5
+    # contents
+    print ("\"coin:" + str(coin) +
+    "@best_moves:" + str(best_moves) +
+    "@cleared:" + str(cleared) + 
+    "@custom_board:" + str(custom_board) +
+    "@locked:" + str(locked) +
+    "@skins:" + str(skins) + "@\"")
+    # ending
+    print "~" * 37
+to_save = ["coin","best_moves","cleared","custom_board","locked","skins"]
+def import_savedata(s):
+    global coin, best_moves, cleared, custom_board, locked, skins
+    # load the contents to variables
+    str_data = []
+    dot = 0
+    at = 1
+    # 6 global variables to save
+    for i in range(len(to_save)):
+        dot = s.find(":",dot+1)
+        #print dot
+        at = s.find("@",at+1)
+        #print at
+        str_data.append("")
+        for w in range(at-dot-1):
+            str_data[i] += s[dot+1+w]    
+    #for i in range(len(to_save)):
+        # print str_data[i]
+    # get coin str_data[0]
+    coin = int(str_data[0])
+    # get best_moves str_data[1]
+    best_moves = []
+    str_data[1] = str_data[1].strip()[1:-1]          # 去掉 [ ]
+    parts = str_data[1].split(",")
+    for p in parts:
+        p = p.strip().replace("'", "")
+        if p == "DNF":
+            best_moves.append("DNF")
+        else:
+            best_moves.append(int(p))
+    """
+    comma1 = 0
+    sb1 = 0
+    sb2=0
+    is_dnf=True
+    while comma1 != -1:
+        is_dnf=True
+        comma2 = str_data[1].find(",",comma1+1)
+        sb2 = str_data[1].find("D",sb1+1)
+        if sb2>comma2:
+            is_dnf = False
+        ele = ""
+        for w in range(comma2-comma1-1):
+            if is_dnf:                
+                ele = 'DNF'                
+                break
+            else:                
+                ele += str_data[1][w+comma1+1]
+       #not last ele         
+        if comma2 != -1:   
+            best_moves.append(ele)
+       # last ele     
+        else:
+            squ = str_data[1].rfind("]")
+            ele = ""
+            if str_data[1].find("D",comma1) !=-1:
+                best_moves.append('DNF')
+            else:    
+                for w in range(squ-comma1-2):
+                    ele += str_data[1][comma1+2+w]
+                best_moves.append(ele)
+                
+        comma1 = comma2
+        if is_dnf:
+            sb1 = sb2
+    # transfer str numbers to int 
+    for i in range(len(best_moves)):
+        if best_moves[i] != 'DNF':
+            best_moves[i] = int(best_moves[i])
+    """        
+    # get cleared str_data[2]
+    temp = list(str_data[2])
+    cleared = [int(x) for x in temp if x in ('0', '1', '2')]
+    # get custom_board str_data[3] 
+    valid = ('T', 'F', 'N', 'X', '0', '1')
+    cells = []
+    for ch in str_data[3] :
+        if ch in valid:
+            cells.append(ch)
+    custom_board = [[] for _ in range(MAX_CUSTOM_BOARD)]
+    idx = 0
+    for b in range(5):
+        bo = []
+        for i in range(10):
+            row = []
+            for j in range(10):
+                row.append(cells[idx])
+                idx += 1
+            bo.append(row)
+        custom_board[b] = bo 
+    # get locked str_data[4]
+    str_data[4] = str_data[4].strip()[2:-2]  # 去掉 [[ ]]
+    rows = str_data[4].split("], [")
+    locked = []
+    for row in rows:
+        items = row.replace("'", "").split(", ")
+        if items != ['']:
+            locked.append([items[0], int(items[1])])
+    # get skins str_data[5]
+    str_data[5] = str_data[5].strip()[2:-2]  # 去掉 [[ ]]
+    rows = str_data[5].split("], [")
+    skins = []
+    for row in rows:
+        items = row.replace("'", "").split(", ")
+        skins.append([items[0], int(items[1])])
+    #print"\n@coin:" + str(coin)
+    #print"@best_moves:" + str(best_moves)
+    #print"@cleared:" + str(cleared) 
+    #print"@custom_board:" + str(custom_board)
+    #print"@locked:" + str(locked)
+    #print"@skins:" + str(skins)
+    print "\nsavedata:\n" + str(s) + "\nloaded\n"
+def spawn_all_F_board():
+    global board
+    board = [['F' for _ in range(MAX_Y_NUM)] for _ in range(MAX_X_NUM)]
+def import_board(lev):
+    global board, Nx, Ny, sol_activate
+    reset_var()
+    sol_activate = False
+    spawn_all_F_board()
+    if lev <= LEVEL_MAX-1:
+        for i in range(len(input_board[lev])):
+            for j in range(len(input_board[lev][0])):
+                board[i][j] = input_board[lev][i][j]
+                if board[i][j] in ('N','2'): # if board[i][j]== 'N' or board[i][j] == '2':
+                    Nx,Ny = i,j
+                    print "level:" + str(level) + ", ini?" + TEXT_X[Nx] + TEXT_Y[Ny]
+def reset_var():
+    global is_win, initial_time, moves, hint, move_string, history
+    is_win = False
+    initial_time = time.time()
+    moves = 0
+    hint = ""
+    move_string = ""
+    history = []
+    
+# change variable text inside into real moves per sol_speed second
+def solver(s):
+    global sol_step, sol_ini_time, sol_activate
+    # get list from s
+    sol_list = []
+    for w in s:
+        s = s.replace("?","")
+    sol_list = s.split(",")
+    sol_list.pop(-1)  
+    
+    if time.time() - sol_ini_time >= sol_speed:
+        auto_move(sol_list[sol_step])
+        sol_ini_time = time.time()
+        sol_step += 1
+    if sol_step >= len(sol_list):
+        sol_step = 0
+        sol_activate = False     
+def auto_move(s):
+    x = TEXT_DIC_X.get(s[0])
+    y = TEXT_DIC_Y.get(s[1])
+    pos = [0,0]
+    pos[0] = x * BLOCK_SIZE
+    pos[1] = y * BLOCK_SIZE
+    print "move: " + s[0] + s[1]
+    mouseclick(pos)   
+# draw funcions
+def rot_point(loc, rad, center):
+    return [(loc[0]-center[0]) * math.cos(rad) - (loc[1]-center[1]) * math.sin(rad) + center[0],
+            (loc[0]-center[0]) * math.sin(rad) + (loc[1]-center[1]) * math.cos(rad) + center[1]]
+def rot_triangle(points,rad,center):
+    return [rot_point(p, rad, center) for p in points]
+def draw_rot_plate(canvas,rot_plate,color,fill):
+    delta = 2*(time.time()-initial_time)
+    cx = BLOCK_SIZE*(rot_plate[0]+1.5)
+    cy = BLOCK_SIZE*(rot_plate[1]+1.5)
+    center = [cx,cy]
+    r = BLOCK_SIZE/3.0
+    dx = BLOCK_SIZE/16.0
+    dy = BLOCK_SIZE/8.0
+    canvas.draw_circle(center, r, BLOCK_SIZE/32.0, color)
+    if rot_plate[2] == "CW":
+        rotating1 = rot_triangle([(cx+r,cy),(cx+r+dx,cy-dy),(cx+r-dx,cy-dy)], delta, center)
+        rotating2 = rot_triangle([(cx-r,cy),(cx-r+dx,cy+dy),(cx-r-dx,cy+dy)], delta, center)
+        rotating3 = rot_triangle([(cx,cy+r),(cx+dy,cy+r-dx),(cx+dy,cy+r+dx)], delta, center)
+        rotating4 = rot_triangle([(cx,cy-r),(cx-dy,cy-r+dx),(cx-dy,cy-r-dx)], delta, center)
+    elif rot_plate[2] == "CCW":
+        delta *= -1
+        rotating1 = rot_triangle([(cx+r,cy),(cx+r+dx,cy+dy),(cx+r-dx,cy+dy)], delta, center)
+        rotating2 = rot_triangle([(cx-r,cy),(cx-r+dx,cy-dy),(cx-r-dx,cy-dy)], delta, center)
+        rotating3 = rot_triangle([(cx,cy+r),(cx-dy,cy+r+dx),(cx-dy,cy+r-dx)], delta, center)
+        rotating4 = rot_triangle([(cx,cy-r),(cx+dy,cy-r-dx),(cx+dy,cy-r+dx)], delta, center)
+    canvas.draw_polygon(rotating1, 1.5, color,fill)
+    canvas.draw_polygon(rotating2, 1.5, color,fill)
+    canvas.draw_polygon(rotating3, 1.5, color,fill)
+    canvas.draw_polygon(rotating4, 1.5, color,fill)
+def draw_rot_plates(canvas, rot_plates, color, fill, show_index=False):
+    for idx, ri in enumerate(rot_plates):
+        draw_rot_plate(canvas, ri, color, fill)
+
+        if show_index:
+            cx = BLOCK_SIZE*(ri[0]+1.5)
+            cy = BLOCK_SIZE*(ri[1]+1.5)
+            canvas.draw_text(str(idx+1),[cx-6, cy+6],FONT,fill)
+def draw_knight(i,j,canvas):
+    if get_activated_skin() == skins[0][0]:
+        png_center = [BLOCK_SIZE/2,BLOCK_SIZE/2]
+        png_size = [BLOCK_SIZE,BLOCK_SIZE]
+        put_center = [BLOCK_SIZE * (i+1),BLOCK_SIZE * (j+1)]
+        put_size = [BLOCK_SIZE,BLOCK_SIZE]
+        canvas.draw_image(knight_png, png_center ,png_size,
+                          put_center,put_size )
+    elif get_activated_skin() == skins[1][0]:
+        # draw (ORIGINAL)
+        color = "cyan"
+        x1 = [BLOCK_SIZE*(i+0.6), BLOCK_SIZE*(j+0.6)]
+        x2 = [BLOCK_SIZE*(i+1.4), BLOCK_SIZE*(j+0.6)]
+        x3 = [BLOCK_SIZE*(i+1.4), BLOCK_SIZE*(j+1.4)]
+        x4 = [BLOCK_SIZE*(i+0.6), BLOCK_SIZE*(j+1.4)] 
+        canvas.draw_line(x1, x3, 4, color)
+        canvas.draw_line(x1, x4, 4, color)
+        canvas.draw_line(x2, x3, 4, color)
+    elif get_activated_skin() == skins[2][0]:  
+        # draw (ORIGINAL)
+        color = "brown"
+        x1 = [BLOCK_SIZE*(i+0.6), BLOCK_SIZE*(j+0.6)]
+        x2 = [BLOCK_SIZE*(i+1.4), BLOCK_SIZE*(j+0.6)]
+        x3 = [BLOCK_SIZE*(i+1.4), BLOCK_SIZE*(j+1.4)]
+        x4 = [BLOCK_SIZE*(i+0.6), BLOCK_SIZE*(j+1.4)] 
+        canvas.draw_line(x1, x3, 4, color)
+        canvas.draw_line(x1, x4, 4, color)
+        canvas.draw_line(x2, x3, 4, color)
+def draw_box(i,j,canvas):
+    color = "blue"
+    x1 = [BLOCK_SIZE*(i+0.6), BLOCK_SIZE*(j+0.6)]
+    x2 = [BLOCK_SIZE*(i+1.4), BLOCK_SIZE*(j+0.6)]
+    x3 = [BLOCK_SIZE*(i+1.4), BLOCK_SIZE*(j+1.4)]
+    x4 = [BLOCK_SIZE*(i+0.6), BLOCK_SIZE*(j+1.4)]
+    canvas.draw_polygon([x1,x2,x3,x4], 2, color)  
+    canvas.draw_line(x1, x3, 2, color)
+    canvas.draw_line(x2, x4, 2, color)
+def draw_dot(i,j,canvas,is_activated):
+    canvas.draw_circle([BLOCK_SIZE*(i+1), BLOCK_SIZE*(j+1)], BLOCK_SIZE/4, BLOCK_SIZE/16, 'Green' if is_activated else 'Red', 'Yellow')
+def draw_board(canvas):
+        # ABCD 1233 side for print movement
+        for i in range(MAX_X_NUM):
+            canvas.draw_text(TEXT_X[i], (BLOCK_SIZE*(i+0.8),FONT), FONT, 'Orange')
+        for j in range(MAX_Y_NUM):
+            canvas.draw_text(TEXT_Y[j], (2, BLOCK_SIZE*(j+1.2)), FONT, 'Orange')
+
+        # if exist blocks
+        for i in range(MAX_X_NUM):
+            for j in range(MAX_Y_NUM):
+                color = 'rgba(0, 0, 0, 0.0)'
+                if board[i][j] != "F":
+                    # grey / white pattern
+                    if (i+j)%2 == 0:
+                        color = 'rgba(255, 255, 255, 0.5)'
+                    else:
+                        color = 'rgba(128, 128, 128, 0.5)'
+                x1 = [BLOCK_SIZE*(i+0.5), BLOCK_SIZE*(j+0.5)]
+                x2 = [BLOCK_SIZE*(i+1.5), BLOCK_SIZE*(j+0.5)]
+                x3 = [BLOCK_SIZE*(i+1.5), BLOCK_SIZE*(j+1.5)]
+                x4 = [BLOCK_SIZE*(i+0.5), BLOCK_SIZE*(j+1.5)]
+                canvas.draw_polygon([x1,x2,x3,x4], 1, 'rgba(0, 128, 0, 1)', color)
+                # knight pattern
+                if board[i][j] == 'N':
+                    draw_knight(i,j,canvas)
+                # box pattern
+                if board[i][j] == 'X':
+                    draw_box(i,j,canvas)
+                # pure point pattern
+                if board[i][j] == '0':
+                    draw_dot(i,j,canvas,False)
+                # box + point pattern
+                if board[i][j] == '1':
+                    draw_dot(i,j,canvas,True)
+                    draw_box(i,j,canvas)                    
+                # knight + point pattern
+                if board[i][j] == '2':
+                    draw_dot(i,j,canvas,False)
+                    draw_knight(i,j,canvas)
+        # rot_plate pattern   
+        #for ri in rot_plate[level]:
+        #    draw_rot_plate(canvas,ri,"pink","red")
+        draw_rot_plates(canvas, rot_plate[level], 'rgba(255, 192, 203, 1)', "rgba(255, 0, 0, 1)" , show_index=True)
+def draw_save(canvas, text, button_color, button_fill, text_color):
+    for ini in range(MAX_CUSTOM_BOARD):
+        n = ini*2.5
+        x1 = ((0.5+n) * BLOCK_SIZE, 11 * BLOCK_SIZE)
+        x2 = ((0.5+n) * BLOCK_SIZE,(11+0.5) * BLOCK_SIZE)
+        x3 = ((0.5+n+2) * BLOCK_SIZE, (11+0.5) * BLOCK_SIZE)
+        x4 = ((0.5+n+2) * BLOCK_SIZE, 11 * BLOCK_SIZE)
+        canvas.draw_polygon([x1,x2,x3,x4], 2, button_color, button_fill)
+        canvas.draw_text(text + str(ini+1), (x1[0]+FONT/2, x1[1]+0.4*BLOCK_SIZE), FONT, text_color)
+def draw_bg_png(canvas, bg_png, png_size, apparent):
+    rpng_size = png_size
+    rpng_center = (png_size[0]/2, png_size[1]/2)
+    rput_center = (WIDTH/2,HEIGHT/2)
+    rput_size = (WIDTH,HEIGHT)
+    x1 = [0, 0]
+    x2 = [WIDTH, 0]
+    x3 = [WIDTH, HEIGHT]
+    x4 = [0, HEIGHT]
+    canvas.draw_image(bg_png , rpng_center ,rpng_size, rput_center,rput_size )
+    canvas.draw_polygon([x1,x2,x3,x4], 0.01, 'rgba(0, 0, 0, 1)', 'rgba(0, 0, 0, '+str(1-apparent)+')')
+    
+def get_activated_skin():
+    for name, active in skins:
+        if active == 1:
+            return name
+    print "error no skin"    
+    return None
+def draw_home(canvas):
+    # skins = [["default",1],["yaju",0], ["ani",0]]
+    if get_activated_skin() == skins[0][0]:
+        png_center = [BLOCK_SIZE/4,BLOCK_SIZE/4]
+        png_size = [BLOCK_SIZE/2,BLOCK_SIZE/2]
+        put_center = png_center
+        put_size = png_size
+        canvas.draw_image(home_png, png_center ,png_size,
+                          put_center,put_size )
+    elif get_activated_skin() == skins[1][0]:
+        # draw menu button (ORIGINAL)
+        x1 = [0, 0]
+        x2 = [0.5*BLOCK_SIZE,0]
+        x3 = [0.5*BLOCK_SIZE, 0.5*BLOCK_SIZE]
+        x4 = [0, 0.5*BLOCK_SIZE]
+        canvas.draw_polygon([x1,x2,x3,x4], 5, 'Red')
+        canvas.draw_text("H", [5 , FONT], FONT, 'Blue')
+    elif get_activated_skin() == skins[2][0]:
+        # draw menu button (ORIGINAL)
+        x1 = [0, 0]
+        x2 = [0.5*BLOCK_SIZE,0]
+        x3 = [0.5*BLOCK_SIZE, 0.5*BLOCK_SIZE]
+        x4 = [0, 0.5*BLOCK_SIZE]
+        canvas.draw_polygon([x1,x2,x3,x4], 5, 'Red')
+        canvas.draw_text("H", [5 , FONT], FONT, 'PINK')    
+# locate the secret code
+def draw_square_of_code(canvas, lb, rt):
+    lt = [69, 12]
+    lb[0] += lt[0]
+    lb[1] += lt[1]
+    rt[0] += lt[0]
+    rt[1] += lt[1]
+    x4 = lb
+    x2 = rt
+    x3 = [rt[0], lb[1]]
+    x1 = [lb[0], rt[1]]
+    canvas.draw_polygon([x1,x2,x3,x4], 1, 'rgba(255, 165, 0, 0.2)', 'rgba(0, 128, 0, 0.1)')
+def draw_title(canvas):
+    rpng_size = [845, 115]
+    rpng_center = (rpng_size[0]/2, rpng_size[1]/2)
+    rput_center = (2*WIDTH/5,2*FONT)
+    rput_size = [rpng_size[0]/2, rpng_size[1]/2]
+    canvas.draw_image(title_png, rpng_center ,rpng_size, rput_center,rput_size )
+    # locate the secret code 
+    if 'n' in input_code:
+        draw_square_of_code(canvas, [78/2, 30/2], [140/2,84/2])
+    if 'i' in input_code:
+        draw_square_of_code(canvas, [146/2, 3/2], [176/2,84/2])
+    if 'g' in input_code:
+        draw_square_of_code(canvas, [180/2, 31/2], [233/2,115/2])
+    if 'u' in input_code:
+        draw_square_of_code(canvas, [443/2, 32/2], [507/2,87/2])
+    if 'h' in input_code:
+        draw_square_of_code(canvas, [554/2, -1/2], [619/2,84/2])
+# NOTDONE add animation
+# draw arrow from block_coordinate x1y1 toward x2y2
+def draw_arrow(canvas,x1,y1,x2,y2,color,fill,size=1.0/8,leng=0.8,mag=1.5):
+    # transfer block_coordinate x1y1x2y2 into x-y
+    px1 = x1 * BLOCK_SIZE
+    py1 = y1 * BLOCK_SIZE
+    px2 = x2 * BLOCK_SIZE
+    py2 = y2 * BLOCK_SIZE
+    t = math.atan2((py2 - py1), (px2 - px1))
+    h = size * BLOCK_SIZE
+    L = math.sqrt((px2 - px1) * (px2 - px1) + (py2 - py1) * (py2 - py1))
+    Ax = px1 - h * math.sin(t)
+    Ay = py1 + h * math.cos(t)
+    Bx = px1 + h * math.sin(t)
+    By = py1 - h * math.cos(t)
+    Cx = px1 + leng * L * math.cos(t) - mag * h * math.sin(t)
+    Cy = py1 + leng * L * math.sin(t) + mag * h * math.cos(t)
+    Dx = px1 + leng * L * math.cos(t) + mag * h * math.sin(t)
+    Dy = py1 + leng * L * math.sin(t) - mag * h * math.cos(t)
+    canvas.draw_polygon([(Ax,Ay),(Bx,By),(px2,py2)], 1.5, color,fill)
+    canvas.draw_polygon([(Cx,Cy),(Dx,Dy),(px2,py2)], 1.5, color,fill)
+def intro_animation(canvas):
+    color = "rgba(255, 165, 0, 0.5)"
+    blue = "rgba(0, 0, 255, 0.5)"
+    white = "rgba(255, 255, 255, 0.5)"
+    canvas.draw_text("click B3", [BLOCK_SIZE*0.5,BLOCK_SIZE*1], FONT, "Red")
+    draw_arrow(canvas,3,1,2,1,color,color)
+    draw_arrow(canvas,2,1,1,2,color,color)
+    canvas.draw_text("click D3", [BLOCK_SIZE*0.5,BLOCK_SIZE*4], FONT, "Red")
+    draw_arrow(canvas,1,5,2,5,color,color)
+    draw_arrow(canvas,2,5,3,4,blue,white)
+    canvas.draw_text("click C6", [BLOCK_SIZE*5.5,BLOCK_SIZE*1], FONT, "Red")
+    draw_arrow(canvas,5,1,5,2,color,color)
+    draw_arrow(canvas,5,2,6,3,blue,white)
+
+    color = "rgba(255, 192, 203, 0.5)"
+    draw_arrow(canvas,2,2.5,2,3.5,color,color)
+    draw_arrow(canvas,2,5.5,2,6.5,color,color)
+    draw_arrow(canvas,6.5,2,7.5,2,color,color)
+
+    color = "rgba(255, 165, 0, 0.5)"
+    canvas.draw_text("can move to purple circles", [BLOCK_SIZE*4.5,BLOCK_SIZE*10], FONT, "Red")
+    # draw y
+    canvas.draw_text("Welcome to intro, click any where to START", (FONT, HEIGHT - 1.3 * FONT ), FONT, 'Orange')
+def draw_where_can_move(canvas):
+    for i in range(MAX_X_NUM):
+        for j in range(MAX_Y_NUM):
+            delx = i - Nx
+            dely = j - Ny
+            if (abs(delx) * abs(dely) == 2) and  (board[i][j] != 'F' and board[i][j] != 'X' and board[i][j] != '1'):
+                    canvas.draw_circle([BLOCK_SIZE*(1+Nx+delx), BLOCK_SIZE*(1+Ny+dely)], BLOCK_SIZE/10 + 1.5*(1+math.sin(3*(time.time()-initial_time))), 2, 'rgba(128, 0, 128, 1)', "rgba(0, 255, 255, 0.2)")
+
+def draw(canvas):
+    global current_screen, sol_ini_time, sol_delta_time, show_time, Nx, Ny
+    stop_bgm()
+    loop_bgm(current_bgm)
+    # NOTDONE SCREENS = ["MENU","CLASSIC","PLAY_CUSTOM","ADVANCE","EDITOR","SHOP","SKIN","STATUS"]
+    if current_screen == "MENU" :
+        # draw background
+        draw_bg_png(canvas,bg1_png,(576,384), min((time.time() - initial_time) / 9.9, 1)) 
+        
+        # draw secret code
+        canvas.draw_text(":" + input_code, (FONT, HEIGHT - 1 * FONT ), FONT, 'Orange' if not have_solve else "Green")
+
+        # draw import savedata button
+        x1 = [10*WIDTH/16, 13*HEIGHT/16]
+        x2 = [16*WIDTH/16, 13*HEIGHT/16]
+        x3 = [16*WIDTH/16, 14*HEIGHT/16]
+        x4 = [10*WIDTH/16, 14*HEIGHT/16]
+        canvas.draw_polygon([x1,x2,x3,x4], 1.5, 'Green' if imported else 'Red','rgba(0, 32, 0, 0.5)')
+        canvas.draw_text("import savedata" , [x1[0]+FONT,x1[1]+FONT], FONT, 'rgba(0, 255, 255, 1)')
+        # draw outport savedata button
+        x1 = [10*WIDTH/16, 15*HEIGHT/16]
+        x2 = [16*WIDTH/16, 15*HEIGHT/16]
+        x3 = [16*WIDTH/16, 16*HEIGHT/16]
+        x4 = [10*WIDTH/16, 16*HEIGHT/16]
+        canvas.draw_polygon([x1,x2,x3,x4], 1.5, 'Green' if outported else 'Red','rgba(0, 32, 0, 0.5)')
+        canvas.draw_text("outport savedata" , [x1[0]+FONT,x1[1]+FONT], FONT, 'rgba(0, 255, 255, 1)')
+        
+        SCREENS = ["MENU","CLASSIC","PLAY_CUSTOM","ADVANCE","EDITOR","SHOP","SKIN","STATUS"]
+        for i in range(len(SCREENS)):
+            # draw TITLE
+            if i == 0:
+                draw_title(canvas)
+            # draw buttons
+            else:
+                x1 = [WIDTH/8, HEIGHT/(len(SCREENS)+2)*(1.2*i)]
+                x2 = [3*WIDTH/8, HEIGHT/(len(SCREENS)+2)*(1.2*i)]
+                x3 = [3*WIDTH/8, HEIGHT/(len(SCREENS)+2)*(1.2*i+1)]
+                x4 = [WIDTH/8, HEIGHT/(len(SCREENS)+2)*(1.2*i+1)]
+                canvas.draw_polygon([x1,x2,x3,x4], 1.5, 'rgba(0, 128, 0, 1)', 'rgba(0, 32, 0, 0.5)')
+                canvas.draw_text(SCREENS[i] , [WIDTH/8 + FONT , HEIGHT/(len(SCREENS)+2)*(1.2*i) + 2*FONT ], FONT, 'Orange')
+                if SCREENS[i] in {item[0] for item in locked}:
+                    canvas.draw_polygon([x1,x2,x3,x4], 1.5, 'rgba(255, 0, 0, 1)',"rgba(0, 0, 0, 1)")
+                    canvas.draw_text("LOCKED" , [WIDTH/8 + FONT , HEIGHT/(len(SCREENS)+2)*(1.2*i) + 2*FONT ], FONT, 'Orange')
+        
+    elif current_screen in GAME:
+        # draw_background ###NOTDONE###
+        if level == 0:
+            draw_bg_png(canvas,bg2_png,(1920,1080),0.3)
+        elif level == 1:
+            pass
+        else:
+            pass
+        # draw board
+        draw_board(canvas)
+        
+        # try solver 
+        if sol_activate:
+            if level == 1:
+                solver("?1C,")
+            elif level == 2:
+                solver("?1A,")
+            elif level == 3:
+                solver("?1B,?3C,")
+            elif level == 4:
+                solver("?2C,?1A,")
+            elif level == 5:
+                solver("?2C,?1C,?2A,")
+            elif level == 6:
+                solver("?1B,?3C,?3D,?4B,")
+            elif level == 7:
+                solver("?3B,?1A,?4C,?2B,")
+            elif level == 8:
+                solver("?4D,?2E,?1C,?2A,?3A,")    
+            elif level == 9:
+                solver("?4A,?3A,?2C,?1A,?1D,?3C,?2E,")
+            elif level == 10:
+                solver("?4A,?5A,?5D,?5E,?2E,?1E,?1B,?1A,")
+            elif level == 11:
+                solver("?2E,?1C,?2A,?4B,?3D,?2B,?1B,?1A,")
+            elif level == 12:
+                solver("?2C,?1A,?2C,?2D,?3B,?4B,?3D,?3E,?2C,")    
+            elif level == 13:
+                solver("?3D,?4B,?4A,?1A,?1D,?4D,?5B,?3C,?2C,?4D,")
+            elif level == 14:
+                solver("?3C,?6E,?4D,?4C,?2B,?5D,?3C,?3B,?1A,?4C,?2B,")
+            elif level == 15:
+                solver("?2D,?1D,?3E,?4C,?2B,?1D,?2B,?3D,?1E,?2C,?3A,")    
+            elif level == 16:
+                solver("?2B,?2C,?1A,?4A,?3C,?2C,?4D,?1D,?2B,?2A,?3C,?3D,?2B,?1D,?3C,")    
+            elif level == 17:
+                solver("?1C,?2A,?3C,?1D,?2F,?4E,?5C,?6E,?4D,?3F,?1E,?2C,?4B,?4E,?5C,")    
+            elif level == 18:
+                solver("?2B,?4A,?3C,?5D,?3C,?3B,?5C,?4A,?2B,?4C,?2B,?4A,?5C,?3B,?1A,")    
+            elif level == 19:
+                solver("?2E,?1C,?4E,?2D,?1D,?2B,?3D,?1C,?1B,?3A,?1D,?2B,?2A,?4B,?2C,?1A,")    
+            elif level == 20:
+                solver("?4A,?3C,?1B,?3A,?2C,?4D,?3B,?2D,?4C,?4B,?2A,?4D,?3B,?3A,?1B,?3C,?2A,")    
+            elif level == 21:
+                solver("?5D,?6D,?7F,?5G,?4E,?6F,?3F,?5G,?2G,?4H,?4E,?6D,?7F,?6D,?6C,?5E,?4E,?4F,?3F,?3G,?2G,?2H,?1H,")
+            elif level == 22:
+                solver("?3A,?4A,?2B,?4C,?3E,?1F,?4D,?3B,?1A,?4C,?3E,?4C,?2B,?2E,?4D,?3B,?3A,?1B,?3C,?4A,?4D,?1B,?3A,?4C,?3E,?2E,?4F,")    
+            elif level == 23:
+                solver("?6C,?5E,?4E,?3C,?5D,?4F,?6C,?4B,?5D,?3E,?5F,?3E,?5D,?3C,?4E,?2D,?1D,?3C,?4E,?6D,?5F,?3E,?2C,?4B,?4E,?2D,?3B,?5A,")    
+            elif level == 24:
+                solver("?3B,?4D,?2E,?3G,?1F,?2H,?4G,?5I,?7H,?6J,?8I,?7G,?9F,?8D,?0E,?9C,?7D,?6B,?4C,?5E,?2E,?3G,?5F,?5I,?7H,?6F,?9F,?8D,?6E,")    
+            elif level == 25:
+                solver("?5B,?7A,?4C,?5A,?2C,?1A,?3D,?1E,?3F,?1G,?4E,?5G,?6E,?7G,?5D,?7C,?4E,?6D,?3D,?4F,?4C,?2D,?5D,?4B,?4E,?3G,?3D,?1C,?4C,?3A,?5D,?7E,")    
+        
+        if not is_win:
+            show_time = int(time.time() - initial_time)
+        # draw level / time / moves / coin
+        canvas.draw_text((" Level: " + str(level)) +
+                         ("   Time: " + str(show_time)) +
+                         ("   Moves: " + str(moves)) + 
+                         ("   Coins: $" + str(coin))
+                        # ("  Cleared " if cleared[level] else "")
+                        , (FONT, HEIGHT-5), FONT, 'Orange')
+        # draw hint
+        canvas.draw_text(hint, (FONT, HEIGHT - 1.3 * FONT ), FONT, 'Orange')
+        
+
+        
+        # show where can move
+        draw_where_can_move(canvas)
+        
+        # draw selecting buttons
+        for p in range(len(game_button)):
+            i = 1.5 * p
+            x1 = (11 * BLOCK_SIZE, (i+0.5) * BLOCK_SIZE)
+            x2 = (11 * BLOCK_SIZE, (i+0.5+1) * BLOCK_SIZE)
+            x3 = ((11+2.5) * BLOCK_SIZE, (i+0.5+1) * BLOCK_SIZE)
+            x4 = ((11+2.5) * BLOCK_SIZE, (i+0.5) * BLOCK_SIZE)
+            if p == 3 and ["undo function",15] in locked:
+                pass
+            else:
+                canvas.draw_polygon([x1,x2,x3,x4], 2, 'pink')
+                canvas.draw_text(game_button[p], (x1[0]+FONT/2,x1[1]+ 0.6*BLOCK_SIZE), FONT, 'Orange')
+            
+        # INTRO
+        if level == 0:
+            Nx = 6
+            Ny = 6
+            intro_animation(canvas)
+    elif current_screen == "PLAY_CUSTOM":
+        draw_board(canvas)
+        draw_save(canvas, "play ", "orange", "Black" , "cyan")
+        canvas.draw_text(hint, (FONT, HEIGHT ), FONT, 'Orange')
+        canvas.draw_text(("   Time: " + str(int(time.time() - initial_time))) +
+                         ("   Moves: " + str(moves))
+                         , (FONT, HEIGHT-BLOCK_SIZE), FONT, 'Orange')
+        draw_where_can_move(canvas)
+    elif current_screen == "EDITOR":
+        draw_board(canvas)
+        # draw button
+        i = 0
+        for p in range(len(buttons)):
+            i = 1.5 * p
+            if buttons[p][1] != 0:
+                x1 = (11 * BLOCK_SIZE, (i+0.5) * BLOCK_SIZE)
+                x2 = (11 * BLOCK_SIZE, (i+0.5+1) * BLOCK_SIZE)
+                x3 = ((11+2.5) * BLOCK_SIZE, (i+0.5+1) * BLOCK_SIZE)
+                x4 = ((11+2.5) * BLOCK_SIZE, (i+0.5) * BLOCK_SIZE)
+                canvas.draw_polygon([x1,x2,x3,x4], 2, 'red')
+            else:
+                x1 = (11 * BLOCK_SIZE, (i+0.5) * BLOCK_SIZE)
+                x2 = (11 * BLOCK_SIZE, (i+0.5+1) * BLOCK_SIZE)
+                x3 = ((11+2.5) * BLOCK_SIZE, (i+0.5+1) * BLOCK_SIZE)
+                x4 = ((11+2.5) * BLOCK_SIZE, (i+0.5) * BLOCK_SIZE)
+                canvas.draw_polygon([x1,x2,x3,x4], 2, 'pink')
+            canvas.draw_text(buttons[p][2], (11 * BLOCK_SIZE +FONT/2, (i+1) * BLOCK_SIZE ), FONT, 'Orange')
+
+        # draw save
+        if is_save:
+            draw_save(canvas, "Save ", 'cyan', 'Black' , 'Orange')
+        else:
+            draw_save(canvas, "Load ", 'yellow', 'Black' ,'Pink')
+
+        
+        # draw if clicked save
+        if saved:
+            canvas.draw_text("map saved", (BLOCK_SIZE-FONT,HEIGHT), FONT, 'pink')
+        if loaded:
+            canvas.draw_text("map loaded", (BLOCK_SIZE-FONT,HEIGHT), FONT, 'pink')
+            
+        # draw change save/load
+        cen = (13.25 * BLOCK_SIZE, 11.25 * BLOCK_SIZE) 
+        canvas.draw_circle(cen , BLOCK_SIZE/2, 1, "yellow")
+        if is_save:
+            canvas.draw_text("to load", (cen[0]-FONT,cen[1]), BLOCK_SIZE/4, 'pink')
+        else:
+            canvas.draw_text("to save", (cen[0]-FONT,cen[1]), BLOCK_SIZE/4, 'orange')
+    elif current_screen == "SHOP":
+        # draw coin
+        canvas.draw_text("Current $: " + str(coin) , (100,50-FONT), FONT, 'yellow')
+        # draw hint
+        canvas.draw_text(hint, (FONT, HEIGHT - 1.3 * FONT ), FONT, 'Orange')
+        # draw button
+        i,j = 0,0
+        for item in locked:
+            x1 = (1 * BLOCK_SIZE, (i+2) * BLOCK_SIZE)
+            x2 = (1 * BLOCK_SIZE, (i+2+1) * BLOCK_SIZE)
+            x3 = ((1+5.5) * BLOCK_SIZE, (i+2+1) * BLOCK_SIZE)
+            x4 = ((1+5.5) * BLOCK_SIZE, (i+2) * BLOCK_SIZE)
+            canvas.draw_polygon([x1,x2,x3,x4], 2, 'red')
+            canvas.draw_text( "-$" + str(item[1]) + " to unlock " + item[0], (1 * BLOCK_SIZE +FONT/2, (i+2.5) * BLOCK_SIZE ), FONT, 'Orange')
+            j += 1
+            i += 2.5       
+    elif current_screen == "STATUS":
+        # status_classic
+        if status_pages == 0:
+            if "ADVANCE" not in {item[0] for item in locked}:
+                # draw to advance button
+                x1 = (WIDTH - 0 * BLOCK_SIZE,HEIGHT - 1*BLOCK_SIZE)
+                x2 = (WIDTH - 5 * BLOCK_SIZE, HEIGHT - 1*BLOCK_SIZE)
+                x3 = (WIDTH - 5 * BLOCK_SIZE, HEIGHT - 0*BLOCK_SIZE)
+                x4 = (WIDTH - 0 * BLOCK_SIZE, HEIGHT - 0*BLOCK_SIZE)
+                canvas.draw_polygon([x1,x2,x3,x4], 2, 'orange')
+                canvas.draw_text("To Advance page", (x2[0]+FONT,x2[1]+BLOCK_SIZE/2), FONT, 'Orange')
+            # draw moves text
+            canvas.draw_text("Current $: " + str(coin) , (100,50-FONT), FONT, 'yellow')
+            canvas.draw_text("CLASSIC Least Moves:" , (50,50), FONT, 'Orange')
+            half = CLASSIC_LEVEL // 2
+            line_gap = 1.2 * FONT
+            for i in range(1, CLASSIC_LEVEL):
+                # 判斷欄位
+                if i <= half:
+                    col_x = 50
+                    row = i
+                else:
+                    col_x = 250
+                    row = i - half
+                y = 50 + row * line_gap
+                # 決定顏色
+                if best_moves[i] == IDEAL_MOVES[i]:
+                    color = 'yellow'
+                else:
+                    color = 'Orange'
+                text = "  Level {:0>2d}: {}".format(i, best_moves[i])
+                canvas.draw_text(text, (col_x, y), FONT, color)
+                
+        # status_advance
+        elif status_pages == 1:
+            # draw to classic button
+            x1 = (0 * BLOCK_SIZE,HEIGHT - 1*BLOCK_SIZE)
+            x2 = (5 * BLOCK_SIZE, HEIGHT - 1*BLOCK_SIZE)
+            x3 = (5 * BLOCK_SIZE, HEIGHT - 0*BLOCK_SIZE)
+            x4 = (0 * BLOCK_SIZE, HEIGHT - 0*BLOCK_SIZE)
+            canvas.draw_polygon([x1,x2,x3,x4], 2, 'orange')
+            canvas.draw_text("To Classic page", (x1[0]+FONT,x1[1]+BLOCK_SIZE/2), FONT, 'Orange')
+            
+            # draw moves text
+            canvas.draw_text("Current $: " + str(coin) , (100,50-FONT), FONT, 'yellow')
+            canvas.draw_text("ADVANCE Least Moves:" , (50,50), FONT, 'Orange')
+            half = CLASSIC_LEVEL // 2
+            line_gap = 1.2 * FONT
+            for i in range(1, LEVEL_MAX-CLASSIC_LEVEL+1):
+                lv = i+CLASSIC_LEVEL-1
+                # 判斷欄位
+                if i <= half:
+                    col_x = 50
+                    row = i
+                else:
+                    col_x = 250
+                    row = i - half
+                y = 50 + row * line_gap
+                # 決定顏色
+                if best_moves[lv] == IDEAL_MOVES[lv]:
+                    color = 'yellow'
+                else:
+                    color = 'Orange'
+                text = "  Level {:0>2d}: {}".format(lv, best_moves[lv])
+                canvas.draw_text(text, (col_x, y), FONT, color)
+    elif current_screen == "SKIN":
+        # draw hint
+        canvas.draw_text("Choose your skin", (FONT, HEIGHT - 1.3 * FONT ), FONT, 'Orange')
+        # draw button
+        i,j = 0,0
+        for item in skins:
+            x1 = (1 * BLOCK_SIZE, (i+2) * BLOCK_SIZE)
+            x2 = (1 * BLOCK_SIZE, (i+2+1) * BLOCK_SIZE)
+            x3 = ((1+5.5) * BLOCK_SIZE, (i+2+1) * BLOCK_SIZE)
+            x4 = ((1+5.5) * BLOCK_SIZE, (i+2) * BLOCK_SIZE)
+            canvas.draw_polygon([x1,x2,x3,x4], 2, 'green' if item[1] == 1 else 'red')
+            canvas.draw_text(item[0], (1 * BLOCK_SIZE +FONT/2, (i+2.5) * BLOCK_SIZE ), FONT, 'Orange')
+            j += 1
+            i += 2.5       
+    # draw the home button           
+    draw_home(canvas)
+    # draw bgm button       
+    x1 = [11*BLOCK_SIZE, 0]
+    x2 = [11*BLOCK_SIZE+1.5*BLOCK_SIZE,0]
+    x3 = [11*BLOCK_SIZE+1.5*BLOCK_SIZE, 0.5*BLOCK_SIZE]
+    x4 = [11*BLOCK_SIZE, 0.5*BLOCK_SIZE]
+    canvas.draw_polygon([x1,x2,x3,x4], 1, "Green" if is_bgm else 'Red', 'rgba(0, 32, 0, 0.5)')
+    canvas.draw_text("bgm" , [x1[0]+FONT,x1[1]+FONT], FONT, 'rgba(0, 255, 255, 1)')  
+    # draw sfx button       
+    x1 = [12.5*BLOCK_SIZE, 0]
+    x2 = [12.5*BLOCK_SIZE+1.5*BLOCK_SIZE,0]
+    x3 = [12.5*BLOCK_SIZE+1.5*BLOCK_SIZE, 0.5*BLOCK_SIZE]
+    x4 = [12.5*BLOCK_SIZE, 0.5*BLOCK_SIZE]
+    canvas.draw_polygon([x1,x2,x3,x4], 1, "Green" if is_sfx else 'Red', 'rgba(0, 32, 0, 0.5)')
+    canvas.draw_text("sfx" , [x1[0]+FONT,x1[1]+FONT], FONT, 'rgba(0, 255, 255, 1)')  
+
+### MOUSE INPUT ###           
+def mouseclick(pos):
+    global board, hint, moves, Nx, Ny, is_win, level, current_screen, custom_board, move_string, is_sfx, is_bgm # GAME
+    global cur_sel, buttons, hint, is_save, saved, loaded # EDITOR
+    global coin, locked, cleared, cleared # SHOP
+    global status_pages # status
+    global have_solve, sol_activate, input_code # show solution move
+    global imported, outported # show if get file 
+    # home button
+    x1 = [0, 0]
+    x2 = [0.5*BLOCK_SIZE,0]
+    x3 = [0.5*BLOCK_SIZE, 0.5*BLOCK_SIZE]
+    x4 = [0, 0.5*BLOCK_SIZE]
+    if pos[0] >= x1[0] and pos[0] <= x3[0]:
+        if pos[1] >= x1[1] and pos[1] <= x3[1]:
+            back_to_menu()
+    # bgm button       
+    x1 = [11*BLOCK_SIZE, 0]
+    x2 = [11*BLOCK_SIZE+1.5*BLOCK_SIZE,0]
+    x3 = [11*BLOCK_SIZE+1.5*BLOCK_SIZE, 0.5*BLOCK_SIZE]
+    x4 = [11*BLOCK_SIZE, 0.5*BLOCK_SIZE]
+    if pos[0] >= x1[0] and pos[0] <= x3[0]:
+        if pos[1] >= x1[1] and pos[1] <= x3[1]:
+            bgm_controller()
+    # sfx button       
+    x1 = [12.5*BLOCK_SIZE, 0]
+    x2 = [12.5*BLOCK_SIZE+1.5*BLOCK_SIZE,0]
+    x3 = [12.5*BLOCK_SIZE+1.5*BLOCK_SIZE, 0.5*BLOCK_SIZE]
+    x4 = [12.5*BLOCK_SIZE, 0.5*BLOCK_SIZE]
+    if pos[0] >= x1[0] and pos[0] <= x3[0]:
+        if pos[1] >= x1[1] and pos[1] <= x3[1]:
+            sfx_controller()
+    
+    if current_screen == "MENU":
+        # if input_code = nigguh: have_solve = True
+        if True:
+            lt = [69, 12]
+            # n
+            x2 = [140/2,84/2]
+            x4 = [78/2, 30/2]
+            x1 = [x4[0], x2[1]]
+            x3 = [x2[0], x4[1]]
+            if pos[0] >= x4[0]+lt[0] and pos[0] <= x2[0]+lt[0]:
+                if pos[1] >= x4[1]+lt[1] and pos[1] <= x2[1]+lt[1]:
+                    input_code += 'n'     
+            # i
+            x2 = [176/2,84/2]
+            x4 = [146/2, 3/2]
+            x1 = [x4[0], x2[1]]
+            x3 = [x2[0], x4[1]]
+            if pos[0] >= x4[0]+lt[0] and pos[0] <= x2[0]+lt[0]:
+                if pos[1] >= x4[1]+lt[1] and pos[1] <= x2[1]+lt[1]:
+                    input_code += 'i'
+            # g
+            x2 = [233/2,115/2]
+            x4 = [180/2, 31/2]
+            x1 = [x4[0], x2[1]]
+            x3 = [x2[0], x4[1]]
+            if pos[0] >= x4[0]+lt[0] and pos[0] <= x2[0]+lt[0]:
+                if pos[1] >= x4[1]+lt[1] and pos[1] <= x2[1]+lt[1]:
+                    input_code += 'g'
+            # u
+            x2 = [507/2,87/2]
+            x4 = [443/2, 32/2]
+            x1 = [x4[0], x2[1]]
+            x3 = [x2[0], x4[1]]
+            if pos[0] >= x4[0]+lt[0] and pos[0] <= x2[0]+lt[0]:
+                if pos[1] >= x4[1]+lt[1] and pos[1] <= x2[1]+lt[1]:
+                    input_code += 'u'
+            # h
+            x2 = [619/2,84/2]
+            x4 = [554/2, -1/2]
+            x1 = [x4[0], x2[1]]
+            x3 = [x2[0], x4[1]]
+            if pos[0] >= x4[0]+lt[0] and pos[0] <= x2[0]+lt[0]:
+                if pos[1] >= x4[1]+lt[1] and pos[1] <= x2[1]+lt[1]:
+                    input_code += 'h'
+
+            if input_code == 'nigguh':
+                have_solve = True
+                if 'Solve' not in game_button:
+                    game_button.append("Solve")	
+                    
+        # if clicked import savedata button
+        x1 = [10*WIDTH/16, 13*HEIGHT/16]
+        x2 = [16*WIDTH/16, 13*HEIGHT/16]
+        x3 = [16*WIDTH/16, 14*HEIGHT/16]
+        x4 = [10*WIDTH/16, 14*HEIGHT/16]
+        if pos[0] >= x1[0] and pos[0] <= x3[0]:
+            if pos[1] >= x1[1] and pos[1] <= x3[1]:
+                imported = True
+                import_savedata(save_string)
+        # if clicked outport savdata button
+        x1 = [10*WIDTH/16, 15*HEIGHT/16]
+        x2 = [16*WIDTH/16, 15*HEIGHT/16]
+        x3 = [16*WIDTH/16, 16*HEIGHT/16]
+        x4 = [10*WIDTH/16, 16*HEIGHT/16]
+        if pos[0] >= x1[0] and pos[0] <= x3[0]:
+            if pos[1] >= x1[1] and pos[1] <= x3[1]:
+                outported = True
+                outport_savedata()
+                
+        # SCREENS = ["MENU","CLASSIC","PLAY_CUSTOM","ADVANCE","EDITOR","SHOP","SKIN","STATUS"]
+        for i in range(len(SCREENS)):
+            # if unlocked clickable 
+            if SCREENS[i] not in {item[0] for item in locked}:
+                x1 = [WIDTH/8, HEIGHT/(len(SCREENS)+2)*(1.2*i)]
+                x2 = [3*WIDTH/8, HEIGHT/(len(SCREENS)+2)*(1.2*i)]
+                x3 = [3*WIDTH/8, HEIGHT/(len(SCREENS)+2)*(1.2*i+1)]
+                x4 = [WIDTH/8, HEIGHT/(len(SCREENS)+2)*(1.2*i+1)]
+                if pos[0] >= x1[0] and pos[0] <= x3[0]:
+                    if pos[1] >= x1[1] and pos[1] <= x3[1]:
+                        # CLASSIC
+                        if i == 1:
+                            if level >= CLASSIC_LEVEL - 1 : 
+                                level = 1
+                            play_bgm(classic_bgm)
+                            import_board(level)
+                        # PLAY_CUSTOM
+                        elif i == 2:
+                            spawn_all_F_board()
+                            reset_var()
+                            hint = ""
+                            play_bgm(custom_bgm)
+                        # ADVANCE  
+                        elif i == 3:
+                            if level <= CLASSIC_LEVEL - 1 : 
+                                level = 26
+                            import_board(level)
+                            hint = ""  
+                            play_bgm(advance_bgm)
+                        # EDITOR    
+                        elif i == 4:
+                            spawn_all_F_board()
+                            reset_var()
+                            hint = ""
+                            play_bgm(editor_bgm)
+                        # SHOP
+                        elif i == 5:
+                            hint = "welcome to shop"
+                            play_bgm(shop_bgm)
+                       
+                        # SKIN
+                        elif i == 6:
+                            # play_bgm(skin_bgm)
+                            play_bgm(status_bgm)
+                            
+                        # STATUS
+                        elif i == 7:
+                            play_bgm(status_bgm)
+                            
+                        # change screen    
+                        current_screen = SCREENS[i]                       
+    elif current_screen == "PLAY_CUSTOM":
+        inp_x = (pos[0] - BLOCK_SIZE / 2) / BLOCK_SIZE
+        inp_y = (pos[1] - BLOCK_SIZE / 2) / BLOCK_SIZE
+        # if clicked in board
+        if inp_x >= 0 and inp_x <= MAX_X_NUM - 1:
+            if inp_y >= 0 and inp_y <= MAX_Y_NUM - 1:
+                # check if win -> next level
+                if is_win:
+                    is_win = False
+                    hint = "custom win"
+                # if not F,X,1,or not_win -> clickable
+                if (not is_win) and (board[inp_x][inp_y] != 'F' and board[inp_x][inp_y] != 'X' and board[inp_x][inp_y] != '1'):
+                    
+                    # follow the knight movement
+                    delx = inp_x - Nx
+                    dely = inp_y - Ny
+                    if abs(delx) * abs(dely) == 2:
+                        if is_sfx:
+                            move_sfx.rewind()
+                            move_sfx.play()
+                            print "play move sfx"
+                        moves += 1
+                        print "step" + str(moves) + ": " + TEXT_X[inp_x] + TEXT_Y[inp_y]  
+                        # fix if knight was on 0     
+                        if board[Nx][Ny] == '2':
+                            board[Nx][Ny] = '0'
+                        else:
+                            board[Nx][Ny] = 'T'
+                        # if inp have 0 
+                        if board[inp_x][inp_y] == '0':
+                            # move right with pushing box
+                            if (delx == 2 and (board[Nx+1][Ny] == 'X' or board[Nx+1][Ny] == '1')):
+                                board[inp_x][inp_y] = '1'
+                                if (board[Nx+1][Ny] == '1'):
+                                    board[Nx+1][Ny] = '2'
+                                else:
+                                    board[Nx+1][Ny] = 'N'
+                                Nx = Nx+1 # update Nx, Ny
+                            # move left with pushing box
+                            elif (delx == -2 and (board[Nx-1][Ny] == 'X' or board[Nx-1][Ny] == '1')):
+                                board[inp_x][inp_y] = '1'
+                                if (board[Nx-1][Ny] == '1'):
+                                    board[Nx-1][Ny] = '2'
+                                else:
+                                    board[Nx-1][Ny] = 'N'
+                                Nx = Nx-1 # update Nx, Ny                  
+                            # move down with pushing box
+                            elif (dely == 2 and (board[Nx][Ny+1] == 'X' or board[Nx][Ny+1] == '1')):
+                                board[inp_x][inp_y] = '1'
+                                if (board[Nx][Ny+1] == '1'):
+                                    board[Nx][Ny+1] = '2'
+                                else:
+                                    board[Nx][Ny+1] = 'N'
+                                Ny = Ny+1 # update Nx, Ny              
+                            # move up with pushing box
+                            elif (dely == -2 and (board[Nx][Ny-1] == 'X' or board[Nx][Ny-1] == '1')):
+                                board[inp_x][inp_y] = '1'
+                                if (board[Nx][Ny-1] == '1'):
+                                    board[Nx][Ny-1] = '2'
+                                else:
+                                    board[Nx][Ny-1] = 'N'
+                                Ny = Ny-1 # update Nx, Ny          
+                            # move without pushing box
+                            else:
+                                board[inp_x][inp_y] = '2'
+                                Nx = inp_x # update Nx, Ny
+                                Ny = inp_y
+                                print "?" + TEXT_X[Nx] + TEXT_Y[Ny]  
+                        ### if inp have T 
+                        if board[inp_x][inp_y] == 'T':
+                            # move right with pushing box
+                            if (delx == 2 and (board[Nx+1][Ny] == 'X' or board[Nx+1][Ny] == '1')):
+                                board[inp_x][inp_y] = 'X'
+                                if (board[Nx+1][Ny] == '1'):
+                                    board[Nx+1][Ny] = '2'
+                                else:
+                                    board[Nx+1][Ny] = 'N'
+                                Nx = Nx+1 # update Nx, Ny
+                            # move left with pushing box
+                            elif (delx == -2 and (board[Nx-1][Ny] == 'X' or board[Nx-1][Ny] == '1')):
+                                board[inp_x][inp_y] = 'X'
+                                if (board[Nx-1][Ny] == '1'):
+                                    board[Nx-1][Ny] = '2'
+                                else:
+                                    board[Nx-1][Ny] = 'N'
+                                Nx = Nx-1 # update Nx, Ny                 
+                            # move down with pushing box
+                            elif (dely == 2 and (board[Nx][Ny+1] == 'X' or board[Nx][Ny+1] == '1')):
+                                board[inp_x][inp_y] = 'X'
+                                if (board[Nx][Ny+1] == '1'):
+                                    board[Nx][Ny+1] = '2'
+                                else:
+                                    board[Nx][Ny+1] = 'N'
+                                Ny = Ny+1 # update Nx, Ny             
+                            # move up with pushing box
+                            elif (dely == -2 and (board[Nx][Ny-1] == 'X' or board[Nx][Ny-1] == '1')):
+                                board[inp_x][inp_y] = 'X'
+                                if (board[Nx][Ny-1] == '1'):
+                                    board[Nx][Ny-1] = '2'
+                                else:
+                                    board[Nx][Ny-1] = 'N'
+                                Ny = Ny-1 # update Nx, Ny          
+                            # move without pushing box
+                            else:
+                                board[inp_x][inp_y] = 'N'
+                                Nx = inp_x # update Nx, Ny
+                                Ny = inp_y
+                        # after moved, rotate the rot_plate
+                        temp = ""
+                        for i in range(len(rot_plate[level])):
+                            lt = board[rot_plate[level][i][0]][rot_plate[level][i][1]]
+                            lb = board[rot_plate[level][i][0]][rot_plate[level][i][1]+1]
+                            rt = board[rot_plate[level][i][0]+1][rot_plate[level][i][1]]   
+                            rb = board[rot_plate[level][i][0]+1][rot_plate[level][i][1]+1]
+                            if rot_plate[level][i][2] == "CW":
+                                if lt == "N" or lt == "2": Nx += 1
+                                elif lb == "N" or lb == "2": Ny -= 1
+                                elif rb == "N" or rb == "2": Nx -= 1
+                                elif rt == "N" or rt == "2": Ny += 1
+                                temp = lt
+                                board[rot_plate[level][i][0]][rot_plate[level][i][1]] = lb
+                                board[rot_plate[level][i][0]][rot_plate[level][i][1]+1] = rb
+                                board[rot_plate[level][i][0]+1][rot_plate[level][i][1]+1] = rt
+                                board[rot_plate[level][i][0]+1][rot_plate[level][i][1]] = temp
+
+                            elif rot_plate[level][i][2] == "CCW":
+                                if lt == "N" or lt == "2": Ny += 1
+                                elif lb == "N" or lb == "2": Nx += 1
+                                elif rb == "N" or rb == "2": Ny -= 1
+                                elif rt == "N" or rt == "2": Nx -= 1
+                                temp = lt
+                                board[rot_plate[level][i][0]][rot_plate[level][i][1]] = rt
+                                board[rot_plate[level][i][0]+1][rot_plate[level][i][1]] = rb
+                                board[rot_plate[level][i][0]+1][rot_plate[level][i][1]+1] = lb
+                                board[rot_plate[level][i][0]][rot_plate[level][i][1]+1] = lt
+
+                    # check win
+                    if not is_win:
+                        is_win = True
+                        for i in range(MAX_X_NUM):
+                            for j in range(MAX_Y_NUM):
+                                if (board[i][j] == '0' or board[i][j] == '2'):
+                                    is_win = False
+                                    break   
+                    # if past level 
+                    if is_win: 
+                        if is_sfx:
+                            win_sfx.rewind()
+                            win_sfx.play()
+                            print "play win sfx"
+                        hint += "custom win"
+        # if load the custom_board
+        for ini in range(MAX_CUSTOM_BOARD):
+            n = ini*2.5
+            x1 = ((0.5+n) * BLOCK_SIZE, 11 * BLOCK_SIZE)
+            x2 = ((0.5+n) * BLOCK_SIZE,(11+0.5) * BLOCK_SIZE)
+            x3 = ((0.5+n+2) * BLOCK_SIZE, (11+0.5) * BLOCK_SIZE)
+            x4 = ((0.5+n+2) * BLOCK_SIZE, 11 * BLOCK_SIZE)
+            if pos[0] >= x1[0] and pos[0] <= x3[0]:
+                if pos[1] >= x1[1] and pos[1] <= x3[1]:
+                    # set board Nx Ny according to custom_board
+                    reset_var()
+                    spawn_all_F_board()
+                    # import custom_board
+                    for i in range(MAX_Y_NUM):
+                        for j in range(MAX_X_NUM):
+                            board[i][j] = custom_board[ini][j][i]
+                            if board[i][j] in ('N','2'): # if board[i][j]== 'N' or board[i][j] == '2':
+                                Nx,Ny = i,j
+                                print "Loaded " + str(ini+1) + ", ini?" + TEXT_X[Nx] + TEXT_Y[Ny]
+                    hint = "Loaded " + str(ini+1)
+                    if any("EDITOR" in item for item in locked):
+                        hint = "Unlock EDITOR to create ur own board"
+    elif current_screen in GAME:
+        # in intro
+        if level == 0:
+            level = 1
+            import_board(level)
+        else:
+            # if in board ,transform pos to inp_x,y
+            inp_x = (pos[0] - BLOCK_SIZE / 2) / BLOCK_SIZE
+            inp_y = (pos[1] - BLOCK_SIZE / 2) / BLOCK_SIZE
+            if inp_x >= 0 and inp_x <= MAX_X_NUM - 1:
+                if inp_y >= 0 and inp_y <= MAX_Y_NUM - 1:
+                    # check if win -> next level
+                    if is_win:
+                        is_win = False
+                        move_string = ""
+                        hint = ""
+                        if (level != LEVEL_MAX - 1):
+                            if level != CLASSIC_LEVEL-1:
+                                level += 1
+                                import_board(level) 
+                                reset_var()
+                            else:
+                                hint = "this is the Classic last level"
+                        else:
+                            hint = "this is the last level"
+                    # if not F,X,1,or not_win -> clickable
+                    if (not is_win) and (board[inp_x][inp_y] != 'F' and board[inp_x][inp_y] != 'X' and board[inp_x][inp_y] != '1'):
+                        
+                        # follow the knight movement
+                        delx = inp_x - Nx
+                        dely = inp_y - Ny
+                        if abs(delx) * abs(dely) == 2:
+                            history.append((copy.deepcopy(board), Nx, Ny, moves)) # record the move
+                            if is_sfx:
+                                move_sfx.rewind()
+                                move_sfx.play()
+                                print "play move sfx"
+                            moves += 1
+                            move_string += "?"+TEXT_X[inp_x] + TEXT_Y[inp_y] + ","
+                            print move_string 
+                            # fix if knight was on 0     
+                            if board[Nx][Ny] == '2':
+                                board[Nx][Ny] = '0'
+                            else:
+                                board[Nx][Ny] = 'T'
+
+                            # if inp have 0 
+                            if board[inp_x][inp_y] == '0':
+                                # move right with pushing box
+                                if (delx == 2 and (board[Nx+1][Ny] == 'X' or board[Nx+1][Ny] == '1')):
+                                    board[inp_x][inp_y] = '1'
+                                    if (board[Nx+1][Ny] == '1'):
+                                        board[Nx+1][Ny] = '2'
+                                    else:
+                                        board[Nx+1][Ny] = 'N'
+                                    Nx = Nx+1 # update Nx, Ny
+                                # move left with pushing box
+                                elif (delx == -2 and (board[Nx-1][Ny] == 'X' or board[Nx-1][Ny] == '1')):
+                                    board[inp_x][inp_y] = '1'
+                                    if (board[Nx-1][Ny] == '1'):
+                                        board[Nx-1][Ny] = '2'
+                                    else:
+                                        board[Nx-1][Ny] = 'N'
+                                    Nx = Nx-1 # update Nx, Ny                    
+                                # move down with pushing box
+                                elif (dely == 2 and (board[Nx][Ny+1] == 'X' or board[Nx][Ny+1] == '1')):
+                                    board[inp_x][inp_y] = '1'
+                                    if (board[Nx][Ny+1] == '1'):
+                                        board[Nx][Ny+1] = '2'
+                                    else:
+                                        board[Nx][Ny+1] = 'N'
+                                    Ny = Ny+1 # update Nx, Ny              
+                                # move up with pushing box
+                                elif (dely == -2 and (board[Nx][Ny-1] == 'X' or board[Nx][Ny-1] == '1')):
+                                    board[inp_x][inp_y] = '1'
+                                    if (board[Nx][Ny-1] == '1'):
+                                        board[Nx][Ny-1] = '2'
+                                    else:
+                                        board[Nx][Ny-1] = 'N'
+                                    Ny = Ny-1 # update Nx, Ny         
+                                # move without pushing box
+                                else:
+                                    board[inp_x][inp_y] = '2'
+                                    Nx = inp_x # update Nx, Ny
+                                    Ny = inp_y
+
+                            ### if inp have T 
+                            if board[inp_x][inp_y] == 'T':
+                                # move right with pushing box
+                                if (delx == 2 and (board[Nx+1][Ny] == 'X' or board[Nx+1][Ny] == '1')):
+                                    board[inp_x][inp_y] = 'X'
+                                    if (board[Nx+1][Ny] == '1'):
+                                        board[Nx+1][Ny] = '2'
+                                    else:
+                                        board[Nx+1][Ny] = 'N'
+                                    Nx = Nx+1 # update Nx, Ny
+                                # move left with pushing box
+                                elif (delx == -2 and (board[Nx-1][Ny] == 'X' or board[Nx-1][Ny] == '1')):
+                                    board[inp_x][inp_y] = 'X'
+                                    if (board[Nx-1][Ny] == '1'):
+                                        board[Nx-1][Ny] = '2'
+                                    else:
+                                        board[Nx-1][Ny] = 'N'
+                                    Nx = Nx-1 # update Nx, Ny                  
+                                # move down with pushing box
+                                elif (dely == 2 and (board[Nx][Ny+1] == 'X' or board[Nx][Ny+1] == '1')):
+                                    board[inp_x][inp_y] = 'X'
+                                    if (board[Nx][Ny+1] == '1'):
+                                        board[Nx][Ny+1] = '2'
+                                    else:
+                                        board[Nx][Ny+1] = 'N'
+                                    Ny = Ny+1 # update Nx, Ny              
+                                # move up with pushing box
+                                elif (dely == -2 and (board[Nx][Ny-1] == 'X' or board[Nx][Ny-1] == '1')):
+                                    board[inp_x][inp_y] = 'X'
+                                    if (board[Nx][Ny-1] == '1'):
+                                        board[Nx][Ny-1] = '2'
+                                    else:
+                                        board[Nx][Ny-1] = 'N'
+                                    Ny = Ny-1 # update Nx, Ny         
+                                # move without pushing box
+                                else:
+                                    board[inp_x][inp_y] = 'N'
+                                    Nx = inp_x # update Nx, Ny
+                                    Ny = inp_y
+
+                            # after moved, rotate the rot_plate
+                            temp = ""
+                            for i in range(len(rot_plate[level])):
+                                lt = board[rot_plate[level][i][0]][rot_plate[level][i][1]]
+                                lb = board[rot_plate[level][i][0]][rot_plate[level][i][1]+1]
+                                rt = board[rot_plate[level][i][0]+1][rot_plate[level][i][1]]   
+                                rb = board[rot_plate[level][i][0]+1][rot_plate[level][i][1]+1]
+                                if rot_plate[level][i][2] == "CW":
+                                    if lt == "N" or lt == "2": Nx += 1
+                                    elif lb == "N" or lb == "2": Ny -= 1
+                                    elif rb == "N" or rb == "2": Nx -= 1
+                                    elif rt == "N" or rt == "2": Ny += 1
+                                    temp = lt
+                                    board[rot_plate[level][i][0]][rot_plate[level][i][1]] = lb
+                                    board[rot_plate[level][i][0]][rot_plate[level][i][1]+1] = rb
+                                    board[rot_plate[level][i][0]+1][rot_plate[level][i][1]+1] = rt
+                                    board[rot_plate[level][i][0]+1][rot_plate[level][i][1]] = temp
+
+                                elif rot_plate[level][i][2] == "CCW":
+                                    if lt == "N" or lt == "2": Ny += 1
+                                    elif lb == "N" or lb == "2": Nx += 1
+                                    elif rb == "N" or rb == "2": Ny -= 1
+                                    elif rt == "N" or rt == "2": Nx -= 1
+                                    temp = lt
+                                    board[rot_plate[level][i][0]][rot_plate[level][i][1]] = rt
+                                    board[rot_plate[level][i][0]+1][rot_plate[level][i][1]] = rb
+                                    board[rot_plate[level][i][0]+1][rot_plate[level][i][1]+1] = lb
+                                    board[rot_plate[level][i][0]][rot_plate[level][i][1]+1] = lt
+
+                        # check win
+                        if not is_win:
+                            is_win = True
+                            for i in range(MAX_X_NUM):
+                                for j in range(MAX_Y_NUM):
+                                    if (board[i][j] == '0' or board[i][j] == '2'):
+                                        is_win = False
+                                        break    
+
+                        # if past level +1 $, if IDEAL_MOVES +1 $
+                        if is_win: 
+                            if is_sfx:
+                                win_sfx.rewind()
+                                win_sfx.play()
+                                print "play win sfx"
+                            sol_activate = False
+                            string = ""
+                            # change status
+                            if best_moves[level] == "DNF" or moves < int(best_moves[level]):
+                                best_moves[level] = moves 
+                                string += "New record! "
+                            else:
+                                string = "Level Cleared"
+                            # if was not cleared
+                            if cleared[level] == 0:
+                                cleared[level] = 1
+                                coin += 1
+                                string += "New cleared! $+1"
+                            # if ideal cleared 
+                            if best_moves[level] <= IDEAL_MOVES[level] and cleared[level] == 1:
+                                cleared[level] = 2
+                                coin += 1
+                                string += " Ideal_move! $+1" 
+                                if best_moves[level] < IDEAL_MOVES[level]:
+                                    string += "wtfhowowogo"
+                            hint = string
+            
+            # game_button = ["RETRY","NEXT lvl","PRE lvl", "Undo", "Solve"]
+            for p in range(len(game_button)):
+                i = 1.5 * p
+                x1 = (11 * BLOCK_SIZE, (i+0.5) * BLOCK_SIZE)
+                x2 = (11 * BLOCK_SIZE, (i+0.5+1) * BLOCK_SIZE)
+                x3 = ((11+2.5) * BLOCK_SIZE, (i+0.5+1) * BLOCK_SIZE)
+                x4 = ((11+2.5) * BLOCK_SIZE, (i+0.5) * BLOCK_SIZE)
+                if pos[0] >= x1[0] and pos[0] <= x3[0]:
+                    if pos[1] >= x1[1] and pos[1] <= x3[1]:
+                        if p == 0:
+                            reset()
+                        elif p == 1:
+                            # if was in 1~25 can't get across to 26
+                            if(level != CLASSIC_LEVEL-1):
+                                next_level()
+                            else:
+                                hint = "already last level"
+                        elif p == 2:
+                            # if was in 26+ can't move back to 25
+                            if(level != CLASSIC_LEVEL):
+                                previous_level()  
+                            else:
+                                hint = "no previous level"
+                        elif p == 3 and (["undo function",15] not in locked):
+                            undo()
+                        elif p == 4 and have_solve:
+                            solve()                                        
+    elif current_screen == "EDITOR":
+        saved = False
+        loaded = False
+        # choose selected button
+        for i in range(len(buttons)):
+            if buttons[i][1] != 0:
+                cur_sel = buttons[i][0]
+                break
+
+        # if in board
+        inp_x = (pos[0] - BLOCK_SIZE / 2) / BLOCK_SIZE
+        inp_y = (pos[1] - BLOCK_SIZE / 2) / BLOCK_SIZE
+        if inp_x >= 0 and inp_x <= MAX_X_NUM - 1:
+            if inp_y >= 0 and inp_y <= MAX_Y_NUM - 1:
+                board[inp_x][inp_y] = cur_sel
+
+        # if selecting buttons
+        for p in range(len(buttons)):
+            i = 1.5 * p
+            x1 = (11 * BLOCK_SIZE, (i+0.5) * BLOCK_SIZE)
+            x2 = (11 * BLOCK_SIZE, (i+0.5+1) * BLOCK_SIZE)
+            x3 = ((11+2.5) * BLOCK_SIZE, (i+0.5+1) * BLOCK_SIZE)
+            x4 = ((11+2.5) * BLOCK_SIZE, (i+0.5) * BLOCK_SIZE)
+            if pos[0] >= x1[0] and pos[0] <= x3[0]:
+                if pos[1] >= x1[1] and pos[1] <= x3[1]:
+                    for num in range(len(buttons)):
+                        if buttons[num][1] != 0:
+                            buttons[num][1] = 0
+                    buttons[p][1] = 1 
+
+        # if saving to custom_board
+        if is_save:
+            for ini in range(MAX_CUSTOM_BOARD):
+                n = ini*2.5
+                x1 = ((0.5+n) * BLOCK_SIZE, 11 * BLOCK_SIZE)
+                x2 = ((0.5+n) * BLOCK_SIZE,(11+0.5) * BLOCK_SIZE)
+                x3 = ((0.5+n+2) * BLOCK_SIZE, (11+0.5) * BLOCK_SIZE)
+                x4 = ((0.5+n+2) * BLOCK_SIZE, 11 * BLOCK_SIZE)
+                if pos[0] >= x1[0] and pos[0] <= x3[0]:
+                    if pos[1] >= x1[1] and pos[1] <= x3[1]:
+                        saved = True
+                        custom_board[ini] = [[board[i][j] for i in range(MAX_Y_NUM)] for j in range(MAX_X_NUM)]
+                        print custom_board[ini] 
+        else:
+            for ini in range(MAX_CUSTOM_BOARD):
+                n = ini*2.5
+                x1 = ((0.5+n) * BLOCK_SIZE, 11 * BLOCK_SIZE)
+                x2 = ((0.5+n) * BLOCK_SIZE,(11+0.5) * BLOCK_SIZE)
+                x3 = ((0.5+n+2) * BLOCK_SIZE, (11+0.5) * BLOCK_SIZE)
+                x4 = ((0.5+n+2) * BLOCK_SIZE, 11 * BLOCK_SIZE)
+                if pos[0] >= x1[0] and pos[0] <= x3[0]:
+                    if pos[1] >= x1[1] and pos[1] <= x3[1]:
+                        loaded = True
+                        board = [[custom_board[ini][i][j] for i in range(MAX_Y_NUM)] for j in range(MAX_X_NUM)]
+                        print custom_board[ini]
+# if save / load            
+        cen = (13.25 * BLOCK_SIZE, 11.25 * BLOCK_SIZE) 
+        if (pos[0] - cen[0])*(pos[0] - cen[0]) + (pos[1] - cen[1]) * (pos[1] - cen[1]) <= BLOCK_SIZE/2 * BLOCK_SIZE/2:
+            is_save = not is_save       
+    elif current_screen == "SHOP":
+        # clicked buttons
+        i,j = 0,0
+        for item in locked:
+            x1 = (1 * BLOCK_SIZE, (i+2) * BLOCK_SIZE)
+            x2 = (1 * BLOCK_SIZE, (i+2+1) * BLOCK_SIZE)
+            x3 = ((1+5.5) * BLOCK_SIZE, (i+2+1) * BLOCK_SIZE)
+            x4 = ((1+5.5) * BLOCK_SIZE, (i+2) * BLOCK_SIZE)
+            if pos[0] >= x1[0] and pos[0] <= x3[0] and pos[1] >= x1[1] and pos[1] <= x3[1]:
+                if coin >= item[1]:
+                    hint = "unlocked " + item[0]
+                    coin -= item[1]
+                    locked.remove(item)
+                    # print locked
+                else:  
+                    hint = "no enough $ to unlock " + item[0]
+            j += 1
+            i += 2.5
+    elif current_screen == "STATUS":
+        # when Advance is unlocked
+        if "ADVANCE" not in {item[0] for item in locked}:
+            # status_classic
+            if status_pages == 0:
+                # clicked to advance button
+                x1 = (WIDTH - 0 * BLOCK_SIZE,HEIGHT - 1*BLOCK_SIZE)
+                x2 = (WIDTH - 5 * BLOCK_SIZE, HEIGHT - 1*BLOCK_SIZE)
+                x3 = (WIDTH - 5 * BLOCK_SIZE, HEIGHT - 0*BLOCK_SIZE)
+                x4 = (WIDTH - 0 * BLOCK_SIZE, HEIGHT - 0*BLOCK_SIZE)
+                if pos[0] >= x2[0] and pos[0] <= x4[0] and pos[1] >= x2[1] and pos[1] <= x4[1]:
+                    status_pages = 1
+            
+            # status_advance
+            elif status_pages == 1:
+                # draw to classic button
+                x1 = (0 * BLOCK_SIZE,HEIGHT - 1*BLOCK_SIZE)
+                x2 = (5 * BLOCK_SIZE, HEIGHT - 1*BLOCK_SIZE)
+                x3 = (5 * BLOCK_SIZE, HEIGHT - 0*BLOCK_SIZE)
+                x4 = (0 * BLOCK_SIZE, HEIGHT - 0*BLOCK_SIZE)
+                if pos[0] >= x1[0] and pos[0] <= x3[0] and pos[1] >= x1[1] and pos[1] <= x3[1]:
+                    status_pages = 0
+    elif current_screen == "SKIN":
+        # skins = [["default",1],["yaju",0], ["ani",0]]
+        # clicked buttons
+        i,j = 0,0
+        for item in skins:
+            item[1] = 0
+            x1 = (1 * BLOCK_SIZE, (i+2) * BLOCK_SIZE)
+            x2 = (1 * BLOCK_SIZE, (i+2+1) * BLOCK_SIZE)
+            x3 = ((1+5.5) * BLOCK_SIZE, (i+2+1) * BLOCK_SIZE)
+            x4 = ((1+5.5) * BLOCK_SIZE, (i+2) * BLOCK_SIZE)
+            if pos[0] >= x1[0] and pos[0] <= x3[0] and pos[1] >= x1[1] and pos[1] <= x3[1]:
+                item[1] = 1
+            j += 1
+            i += 2.5
+def input_handler(text_input):
+    global level, hint, current_screen
+    try:
+        if int(text_input) > 0 and int(text_input) <= LEVEL_MAX - 1:
+            level = int(text_input)
+            import_board(level)
+            reset_var()
+            current_screen = "CLASSIC"
+        else:
+            hint =  "out of range"
+            
+    except ValueError:
+        hint = "Invalid input. Please enter an integer."
+### NOTDONE
+def bgm_controller():
+    global is_bgm, current_bgm, start_bgm_time
+    is_bgm = not is_bgm
+    if not is_bgm:
+        if current_bgm is not None:
+            current_bgm.pause()
+    else:
+        if current_bgm is not None:
+            current_bgm.rewind()
+            current_bgm.play()
+            start_bgm_time = time.time()
+def stop_bgm():
+    global current_bgm
+    if current_bgm is not None and not is_bgm:
+        current_bgm.pause()
+def play_bgm(new_bgm):
+    global current_bgm
+    if not is_bgm or new_bgm == current_bgm:
+        return
+    if current_bgm is not None:
+        current_bgm.pause()
+    current_bgm = new_bgm
+    
+    current_bgm.rewind()
+    current_bgm.play() 
+    start_bgm_time = time.time()
+    
+def loop_bgm(current_bgm):
+    global start_bgm_time
+    if (time.time() - start_bgm_time) >= BGM_TIME[current_bgm]+2:
+        current_bgm.rewind()
+        current_bgm.play() 
+        start_bgm_time = time.time()
+        
+def sfx_controller():
+    global is_sfx
+    is_sfx = not is_sfx
+    
+def reset():
+    if current_screen in GAME:
+        import_board(level)
+        reset_var()
+def next_level():
+    global level, hint
+    if current_screen in GAME:
+        if level < LEVEL_MAX - 1:
+            level += 1
+            import_board(level)
+        else:
+            hint = "already last level"
+def previous_level():
+    global level, hint
+    if current_screen in GAME:
+        if level > 1:
+            level -= 1
+            import_board(level)
+        else:
+            hint = "no previous level"
+def back_to_menu():
+    global current_screen, input_code
+    current_screen = "MENU"
+    input_code = ''
+def solve():
+    global sol_ini_time, sol_activate
+    import_board(level)
+    sol_activate = True
+    sol_ini_time = time.time()-sol_speed/2
+def undo():
+    global board, Nx, Ny, moves
+
+    if history:
+        board, Nx, Ny, moves = history.pop()
+# Create a frame and assign callbacks to event handlers
+frame = simplegui.create_frame("Knight_Push_Box", WIDTH, HEIGHT)
+frame.add_button('? Back to Menu ?', back_to_menu)
+# frame.add_button('TEMP@notdone show answer', solve)
+inp = frame.add_input('? Level select ?', input_handler, 100)
+frame.set_mouseclick_handler(mouseclick)
+frame.set_draw_handler(draw)
+
+# Start the frame animation
+frame.start()
+play_bgm(classic_bgm)

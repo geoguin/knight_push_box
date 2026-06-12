@@ -1,0 +1,25 @@
+!!! 讓電腦能夠獲得走法邏輯出，並放到地圖編輯器裡判斷，輸出文本(地圖array，最佳步數，走法)
+
+@@@ 寫成能當成unity執行的樣子
+
+??? 加個黑暗關卡，可以購買火把(原先max以N為中心5*5但只顯示滑鼠方向的3*3)增加視野到(6*6無滑鼠方向問題)
+然後會有阿部高和從陰暗潮濕的角落背後亨亨亨ㄚㄚㄚㄚㄚ
+???想要破壞這三定律的話就是DLC了
+1.多些棋子(加入野獸先輩ん？)
+2.加入特殊方塊(活塞搭配終界燭)可平移箱子等等的
+3.箱子可以當作地板來走(像是水漥點點讓箱子會掉下去變成橋的感覺)或是傳送門
+??? 其他概念小遊戲
+一筆畫騎士，騎士8面跳舞機
+??? 走過的地面變透明顯示底下影藏圖片/點點完成附近變透明等等
+
+### Achievements 
+-in lvl 13 didn't use B5,C5 => self_challenge
+-moves more than 100 => never gonna give you up
+-clear all lvl 1~25 => GG
+-all ideal moves for lvl 1~25 => GG EZ
+-buy something in shop => not pay to win
+-win a play_custom => architect
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+if board[i][j] in ('N','2'): <<< # if board[i][j]== 'N' or board[i][j] == '2':
+
+make better intro with animation and mouse click motion

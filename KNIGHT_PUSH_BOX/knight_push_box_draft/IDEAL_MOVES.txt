@@ -1,0 +1,104 @@
+IDEAL_MOVES = [0,    #classic / intro = 0
+ 1, 1, 2, 2, 3,      #5
+ 4, 4, 5, 7, 8,      #10
+ 8, 9, 10, 11, 11,   #15
+ 15, 15, 15, 16, 17, #20
+ 23, 27, 28, 32, 35] #25
+
+
+level:1, ini♞3B
+♞2B↙
+level:2, ini♞3B
+♞2B↖
+level:3, ini♞3A
+♞1B♞2B↘
+level:4, ini♞3A
+♞2C♞2B↖
+level:5, ini♞4B
+♞3B↙♞1C♞1B↗
+level:6, ini♞3A
+♞1B♞2B↘♞3D♞3C↗
+level:7, ini♞2D
+♞3B♞2B↖♞4C♞3C↖
+level:8, ini♞3B
+♞3C↘♞3D↙♞1C♞1B↗♞2B↗
+level:9, ini♞6B
+♞5B↖♞3A♞2C♞2B↖♞1D
+♞3C♞3D↙
+level:10, ini♞3C
+♞3B↗♞4B↗♞4C↘♞4D↘♞3D↙
+♞2D↙♞2C↖♞2B↖
+level:11, ini♞4D
+♞2E♞1C♞2A♞4B♞3D
+♞3C↖♞2C↖♞2B↖
+level:12, ini♞4B
+♞2C♞1A♞1B↘♞2D♞2C↗
+♞4B♞4C↙♞3E♞3D↖
+level:13, ini♞4B
+♞3D♞3C↗♞3B↗♞2B↖♞2C↙
+♞4D♞5B♞4B↙♞2C♞3C↘
+level:14, ini♞5D
+♞4D↖♞6E♞5E↖♞4C♞3C↖
+♞5D♞4D↖♞3B♞2B↖♞4C♞
+3C↖
+level:15, ini♞4C
+♞3E♞1D♞1C↗♞3D♞1E
+♞2C♞2B↗♞4C♞3C↙♞1D
+♞2D↘
+level:16, ini♞4A
+♞4B↙♞2C♞3C↘♞4A♞3A↙
+♞1B♞2B↘♞1D♞1C↗♞3B
+♞2B↖♞3D♞3C↖♞1D♞2D↗
+level:17, ini♞2E
+♞1C♞2A♞2B↘♞1D♞2F
+♞4E♞5C♞6E♞5E↖♞3F
+♞1E♞2C♞3C↗♞4E♞4D↗
+level:18, ini♞4C
+♞2B♞4A♞3C♞5D♞4D↖
+♞3B♞5C♞4A♞2B♞4C
+♞3C↖♞4A♞5C♞3B♞2B↖
+level:19, ini♞4F
+♞2E♞2D↖♞4E♞3E↖♞1D
+♞1C↗♞3D♞2D↖♞1B♞2B↗
+♞1D♞1C↗♞2A♞3A↘♞2C
+♞2B↖
+level:20, ini♞2B
+♞4A♞3C♞2A♞4B♞2C
+♞4D♞4C↖♞3A♞3B↙♞2D
+♞2C↖♞4D♞3D↖♞1C♞2C↗
+♞4B♞3B↖
+level:21, ini♞4B
+♞6C♞8D♞7F♞7E↖♞5D
+♞5E↘♞3F♞3G↘♞4E♞4F↘
+♞5D♞4B♞4C↘♞5A♞6C
+♞6D↙♞5D↙♞5E↙♞4E↙♞4F↙
+♞3F↙♞3G↙♞2G↙
+level:22, ini♞1B
+♞2B↗♞4A♞3A↙♞4C♞3E
+♞2E↙♞4D♞3B♞2B↖♞4C
+♞3E♞3D↗♞3C↖♞2E♞4D
+♞4C↖♞3A♞1B♞2B↘♞3B↗
+♞3C↘♞1B♞3A♞4C♞4D↙
+♞2E♞3E↘
+level:23, ini♞4B
+♞6C♞6D↙♞5F♞3E♞5D
+♞5E↙♞6C♞4B♞2C♞3E
+♞5F♞4F↖♞5D♞3C♞4E
+♞3E↖♞1D♞2D↗♞3B♞5A
+♞6C♞4B♞2C♞3C↗♞4E
+♞2D♞3B♞4B↗
+level:24, ini♞5A
+♞3B♞3C↘♞2E♞3G♞1F
+♞2H♞3H↗♞5I♞7H♞6J
+♞8I♞8H↖♞9F♞8D♞0E
+♞9C♞8C↙♞6B♞4C♞4D↘
+♞2E♞3G♞4G↗♞5I♞7H
+♞7G↖♞9F♞8D♞7D↙
+level:25, ini♞4D
+♞3B♞2B↖♞3D♞2D↖♞3F
+♞2F↙♞4E♞4F↘♞6E♞6F↘
+♞5D♞6D↗♞5B♞6B↗♞4C
+♞4B↖♞2C♞3C↗♞5B♞5C↘
+♞6E♞5E↙♞3F♞3E↖♞4C
+♞4B↗♞6C♞6D↘♞5F♞4F↙
+♞3D♞2D↙
